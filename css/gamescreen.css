@@ -1,4 +1,12 @@
 /*First screen player*/
+body {
+	background-image: url("../sources/screen2.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	background-size: cover;
+  }
+
 #timming{
 	position: absolute;
 	z-index: 50;
