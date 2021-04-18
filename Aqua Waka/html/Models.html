@@ -13,7 +13,8 @@
 		var controls, clock, deltaTime;
 		var objects = [];
 		var keys = {};
-
+		var objectMov; 
+		var cube;
 		var isWorldReady = [false, false];
 
 		$(document).ready(function(){
@@ -34,13 +35,14 @@
 
 			loadOBJWithMTL("assets/", "Pez_Globo.obj", "Pez_Globo.mtl", (object) => {
 
-				object.position.z = -10;
-				object.position.x = -10;
+				// object.position.z = -10;
+				// object.position.x = -10;
+
 
 				object.position.y = 5;
 				object.rotation.y = THREE.Math.degToRad(-90);
-
-				scene.add(object);
+				objectMov = object;
+				cube.add(object);
 				isWorldReady[1] = true;
 			});
 			render();
@@ -91,10 +93,18 @@
 
 			if (isWorldReady[0] && isWorldReady[1]) {
 				
-				camera.rotation.y += yaw * deltaTime;
-				camera.translateZ(forward * deltaTime);
+				// camera.rotation.y += yaw * deltaTime;
+				// camera.translateZ(forward * deltaTime);
 			}
+			
+			cube.rotation.y += yaw * deltaTime; 
+			cube.translateZ( forward * deltaTime);
+
+			// objectMov.rotation.y += yaw * deltaTime;
+			// objectMov.translateZ(forward * deltaTime);
+			
 			renderer.render(scene, camera);
+			// camera.lookAt(objectMov.position);
 
 		}
 
@@ -103,8 +113,8 @@
 			clock = new THREE.Clock();		
 			scene = new THREE.Scene();
 			camera = new THREE.PerspectiveCamera(75, visibleSize.width / visibleSize.height, 0.1, 100);
-			camera.position.z = 2;
-			camera.position.y = 5;
+			camera.position.z = 0;
+			// camera.position.y = 5;
 
 			renderer = new THREE.WebGLRenderer( {precision: "mediump" } );
 			renderer.setClearColor(new THREE.Color(0, 1, .9));
@@ -122,6 +132,16 @@
 			grid.position.y = -1;
 			scene.add(grid);
 
+			var material = new THREE.MeshLambertMaterial({color: new THREE.Color(0, 0.0, 0.0)});
+			var geometry = new THREE.BoxGeometry(1, 1, 1);
+			cube = new THREE.Mesh(geometry, material)
+			cube.position.y = 2;
+			scene.add(cube);
+
+			camera.position.y = 50;
+			camera.position.z = 50;
+			// camera.rotation.y = THREE.Math.degToRad(-45);
+			camera.rotation.x = THREE.Math.degToRad(-45);
 			$("#scene-section").append(renderer.domElement);
 		}
 
