@@ -13,7 +13,8 @@
 		var controls, clock, deltaTime;
 		var objects = [];
 		var keys = {};
-		var cube;
+		var objectMov; 
+		var cube, cube2;
 		var isWorldReady = [false, false];
 
 		$(document).ready(function(){
@@ -62,10 +63,19 @@
 				object.scale.z = 0.4;
 
 				cube.add(object);
-				
 
 			});
 
+            loadOBJWithMTL("assets/", "KO_Hammer_Brawl2.obj", "KO_Hammer_Brawl2.mtl", (object) => {
+				
+				object.scale.x = 0.4;
+				object.scale.y = 0.4;
+				object.scale.z = 0.4;
+
+				cube2.add(object);
+				
+
+			});
 			
 			render();
 			document.addEventListener('keydown', onKeyDown);
@@ -82,8 +92,8 @@
 			});
 			var sky = new THREE.Mesh(skyDom, material);
     		sky.material.side = THREE.BackSide;
-			sky.position.z = 40;
-			sky.position.y = 4;
+            sky.position.z = 40;
+            sky.position.y = 4;
     		scene.add(sky);
 
 		});
@@ -115,8 +125,9 @@
 			requestAnimationFrame(render);
 			deltaTime = clock.getDelta();	
 
-			yaw = 0;
-			forward = 0;
+			var yaw = 0, yaw2 = 0;
+			var forward = 0, forward2 = 0;
+
 			if (keys["A"]) {
 				yaw = -20;
 			} else if (keys["D"]) {
@@ -137,17 +148,45 @@
 				
 				cube.rotation.x = THREE.Math.degToRad(0);
 			}
+
+            //Segundo martillo
+
+            
+			if (keys["J"]) {
+				yaw2 = -20;
+			} else if (keys["L"]) {
+				yaw2 = 20;
+			}
+			if (keys["I"]) {
+				forward2 = -20;
+			} else if (keys["K"]) {
+				forward2 = 20;
+			}
+
+			if(keys["N"]){
+				cube2.rotation.x = THREE.Math.degToRad(-90);
+				yaw2 = 0;
+				forward2 = 0;
+				
+			}else {
+				
+				cube2.rotation.x = THREE.Math.degToRad(0);
+			}
+
+
 			if (isWorldReady[0] && isWorldReady[1]) {
 				
 				// camera.rotation.y += yaw * deltaTime;
 				// camera.translateZ(forward * deltaTime);
-				cube.translateZ( forward * deltaTime);
-				cube.translateX(yaw * deltaTime);
-
-
+                cube.translateZ( forward * deltaTime);
+			    cube.translateX(yaw * deltaTime);
+                cube2.translateZ( forward2 * deltaTime);
+			    cube2.translateX(yaw2 * deltaTime);
 			}
 			
 			// cube.rotation.y += yaw * deltaTime; 
+			
+			
 			renderer.render(scene, camera);
 			// camera.lookAt(objectMov.position);
 
@@ -182,22 +221,22 @@
 				opacity: .0,
 				transparent: true,
 			});
-
 			var geometry = new THREE.BoxGeometry(1, 1, 1);
-			cube = new THREE.Mesh(geometry, material);
+			cube = new THREE.Mesh(geometry, material)
 			cube.position.y = 2;
-
-			
-
-			cube.position.x = 0;
+            cube.position.x = -20;
 			cube.position.z = 20;
-
-			// cube2.position.x = 20;	
-			// cube2.position.x = 20;
-			
 			scene.add(cube);
-			
 
+            cube2 = new THREE.Mesh(geometry, material);
+			cube2.position.y = 2;
+            
+			// cube2 = cube.clone();
+			cube2.position.x = 20;
+			cube2.position.z = 20;
+
+
+            scene.add(cube2);
 			camera.position.y = 30;
 			camera.position.z = 60;
 			// camera.rotation.y = THREE.Math.degToRad(-45);
@@ -218,6 +257,7 @@
 <body>
 
 	<div id="scene-section"></div>
+    <div>Hola</div>
 
 </body>
 </html>
