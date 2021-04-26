@@ -3,15 +3,9 @@
 <head>
 	<title>Modelos</title>
 	<script type="text/javascript" src="js/libs/jquery/jquery-2.1.4.min.js"></script>
-
-	<script type="text/javascript" src="js/libs/three/three2.js"></script>
-	<!-- <script type="text/javascript" src="js/libs/three/three.js"></script> -->
+	<script type="text/javascript" src="js/libs/three/three.js"></script>
 	<script type="text/javascript" src="js/libs/three/MTLLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/OBJLoader.js"></script>
-	<script type="text/javascript" src="js/libs/three/FBXLoader.js"></script>
-	<script type="text/javascript" src="js/libs/three/inflate.min.js"></script>
-	
-	
 
 	<script type="text/javascript">
 		
@@ -22,14 +16,8 @@
 		var cube;
 		var isWorldReady = [false, false];
 
-		//Modelos con animacion
-		var mixers = [];
-		var mixers_2 = [];
-
-		var objs = [];
-
 		$(document).ready(function(){
-			
+
 			setupScene();
 
 			loadOBJWithMTL("assets/Island/", "Island.obj", "Island.mtl", (object) => {
@@ -87,7 +75,8 @@
 			// createSkydome();
 			var skyDom = new THREE.SphereGeometry(166, 25 ,25);
 			var loader = new THREE.TextureLoader(),
-			texture = loader.load("../sources/Sky.png");
+			texture = loader.load("../sources/Skydome02.jpg");
+
 			var material = new THREE.MeshPhongMaterial({ 
         	map: texture,
 			});
@@ -96,27 +85,6 @@
 			sky.position.z = 40;
 			sky.position.y = 4;
     		scene.add(sky);
-
-
-			//========================
-			var loader = new THREE.FBXLoader();
-			loader.load('assets/FBX/Pira.fbx', model => {
-				var mixer = new THREE.AnimationMixer(model);
-				// model.scale.x = 0.05;
-				// model.scale.y = 0.05;
-				// model.scale.z = 0.05;
-
-				var action = mixer.clipAction(model.animations[0]);
-
-				scene.add(model);
-				action.play();
-				action.setLoop(THREE.Loop);
-				action.timeScale = 500;
-				objs.push({model, mixer});
-				model.name = "Pirana";
-			});
-
-			
 
 		});
 
@@ -175,7 +143,6 @@
 				// camera.translateZ(forward * deltaTime);
 				cube.translateZ( forward * deltaTime);
 				cube.translateX(yaw * deltaTime);
-				objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
 
 
 			}
