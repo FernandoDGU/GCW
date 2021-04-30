@@ -22,7 +22,7 @@
 		var objectMov; 
 		var cube, cube2;
 		var isWorldReady = [false, false];
-
+		var texturewater;
 		var objs = [];
 
 		$(document).ready(function(){
@@ -31,9 +31,10 @@
 
 			loadOBJWithMTL("assets/Island/", "Island.obj", "Island.mtl", (object) => {
 
-				object.position.z = -30;
+				object.position.z = -40;
 
-				object.position.y = 0;
+				object.position.y = -1;
+
 				// object.rotation.y = THREE.Math.degToRad(-90);
 				object.scale.x = 4.0;
 				object.scale.y = 3.5;
@@ -41,34 +42,94 @@
 
 				object.rotation.y = THREE.Math.degToRad(90);
 
-				//cubo01.position.x = -1;
-				//cubo01.name = "cubo01"
-
-				var isla2 = object.clone();
-				var isla3 = object.clone();
-
-				isla2.scale.x = 3.0;
-				isla2.scale.y = 2.5;
-				isla2.scale.z = 3.0;
-
-				isla3.scale.x = 3.0;
-				isla3.scale.y = 2.5;
-				isla3.scale.z = 3.0;
-
-				isla2.position.z = -5;
-				isla2.position.x = -65;
-				isla2.rotation.y = THREE.Math.degToRad(-180);
-				
-				isla3.position.z = -5;
-				isla3.position.x = 65;
-				isla3.rotation.y = THREE.Math.degToRad(180);
-				
-				// cube.add(object);
+				//var isla3 = object.clone();
 				scene.add(object);
-				scene.add(isla2);
-				scene.add(isla3);
 
 				isWorldReady[0] = true;
+			});
+
+			//New Isla Left
+			loadOBJWithMTL("assets/Island/", "newisland.obj", "newisland.mtl", (object) => {
+
+				object.position.x = -60; 
+				object.position.y = -0.5;
+				object.position.z = -2; //delante(+) y atras(-)
+				
+				object.scale.x = 3.0;
+				object.scale.y = 2.5;
+				object.scale.z = 3.0;
+
+				object.rotation.y = THREE.Math.degToRad(112);
+
+				scene.add(object);
+			});
+
+			loadOBJWithMTL("assets/pokeisla/", "KittyIsland.obj", "KittyIsland.mtl", (object) => {
+
+				object.position.x = -70; 
+				object.position.y = -12;
+				object.position.z = -60; //delante(+) y atras(-)
+				
+				object.scale.x = 3.0;
+				object.scale.y = 3.0;
+				object.scale.z = 3.0;
+
+				var isla2 = object.clone();
+				isla2.position.x = 80;
+				object.rotation.y = THREE.Math.degToRad(-50);
+
+				object.rotation.y = THREE.Math.degToRad(50);
+				scene.add(object);
+				scene.add(isla2);
+			});
+
+			loadOBJWithMTL("assets/barcopirata/", "PirateShip.obj", "PirateShip.mtl", (object) => {
+
+				object.position.x = 52;
+				object.position.y = -6; 
+				object.position.z = 7; //delante(+) y atras(-)
+				
+				object.scale.x = 2.0;
+				object.scale.y = 2.0;
+				object.scale.z = 2.0;
+
+				object.rotation.y = THREE.Math.degToRad(180);
+				object.rotation.x = THREE.Math.degToRad(-4);
+				scene.add(object);
+			});
+
+			loadOBJWithMTL("assets/roca/", "roca.obj", "roca.mtl", (object) => {
+
+				object.position.x = -50;
+				object.position.y = -5; 
+				object.position.z = 38; //delante(+) y atras(-)
+				
+				object.scale.x = 2.5;
+				object.scale.y = 2.5;
+				object.scale.z = 2.5;
+
+				var roca2 = object.clone();
+				object.position.x = 50;
+				object.position.y = -5; 
+				object.position.z = 35;
+
+				object.rotation.y = THREE.Math.degToRad(180);
+
+				scene.add(object);
+				scene.add(roca2);
+			});
+
+			loadOBJWithMTL("assets/salvavidas/", "salva.obj", "salva.mtl", (object) => {
+
+				object.position.x = 30;
+				object.position.y = 2; 
+				object.position.z = 45; //delante(+) y atras(-)
+				
+				object.scale.x = 1.2;
+				object.scale.y = 1.2;
+				object.scale.z = 1.2;
+				scene.add(object);
+				
 			});
 
 			loadOBJWithMTL("assets/", "KO_Hammer_Brawl.obj", "KO_Hammer_Brawl.mtl", (object) => {
@@ -91,6 +152,18 @@
 				
 
 			});
+
+			//Water
+			texturewater = new THREE.TextureLoader().load("../sources/water.png");
+			texturewater.wrapS = texturewater.wrapT = THREE.RepeatWrapping;
+			texturewater.repeat.set(0.6,0.6);
+
+			var floorMaterial = new THREE.MeshBasicMaterial({map: texturewater, side: THREE.DoubleSide});
+			var floorGeometry = new THREE.PlaneGeometry(300, 200, 10, 10);
+			var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+			floor.position.y = -0.12;
+			floor.rotation.x = Math.PI /2;
+			scene.add(floor);
 			
 			render();
 			document.addEventListener('keydown', onKeyDown);
@@ -125,6 +198,7 @@
 				//Position
 				model.position.z = 28; //frente(+) + atras(-)
 				model.position.x = 25; //izq(-) + der(+)
+				model.position.y = -1;
 
 				//Rotation
 				model.rotation.x = THREE.Math.degToRad(-25);
@@ -151,6 +225,7 @@
 				//Position
 				model.position.z = 15; //frente(+) + atras(-)
 				model.position.x = 12; //izq(-) + der(+)
+				model.position.y = 0.5;
 
 				//Rotation
 				model.rotation.y = THREE.Math.degToRad(-90);
@@ -178,6 +253,7 @@
 				//Position
 				model.position.z = 15; //frente(+) + atras(-)
 				model.position.x = -10;//izq(-) + der(+)
+				model.position.y = 2;
 
 				//Rotation
 				model.rotation.x = THREE.Math.degToRad(-25);
@@ -232,6 +308,7 @@
 				//Position
 				model.position.z = 25; //frente(+) + atras(-)
 				model.position.x = 0; //izq(-) + der(+)
+				model.position.y = 2.5;
 
 				//Rotation
 				model.rotation.x = THREE.Math.degToRad(-5);
@@ -338,7 +415,7 @@
 			
 			// cube.rotation.y += yaw * deltaTime; 
 			
-			
+			texturewater.offset.x +=.0003;
 			renderer.render(scene, camera);
 			// camera.lookAt(objectMov.position);
 
