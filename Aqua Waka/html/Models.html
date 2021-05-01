@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="js/libs/three/OBJLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/FBXLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/inflate.min.js"></script>
+	<script type="module" src="js/libs/three/Math/Box3.js"></script>
 	
 	
 
@@ -19,10 +20,14 @@
 		var controls, clock, deltaTime;
 		var objects = [];
 		var keys = {};
-		var cube;
+		var cube, cube2, cubeSmash;
 		var isWorldReady = [false, false];
 		var texturewater;
 		var objs = [];
+		var cubesCol = [];
+		
+		//Colisiones var
+		var collidableMeshList = [];
 
 		$(document).ready(function(){
 			
@@ -139,6 +144,7 @@
 				object.scale.z = 0.4;
 
 				cube.add(object);
+
 				
 			});
 
@@ -159,20 +165,8 @@
 			document.addEventListener('keydown', onKeyDown);
 			document.addEventListener('keyup', onKeyUp);	
 
-
-			// createSkydome();
-			var skyDom = new THREE.SphereGeometry(166, 25 ,25);
-			var loader = new THREE.TextureLoader(),
-			texture = loader.load("../sources/Sky.png");
-			var material = new THREE.MeshPhongMaterial({ 
-        	map: texture,
-			});
-			var sky = new THREE.Mesh(skyDom, material);
-    		sky.material.side = THREE.BackSide;
-			sky.position.z = 40;
-			sky.position.y = 4;
-    		scene.add(sky);
-
+			//------------Skydome--------------		
+			createSkydome();
 
 			//========================CARGA DE FBX
 
@@ -195,8 +189,11 @@
 				model.rotation.x = THREE.Math.degToRad(-25);
 
 				var action = mixer.clipAction(model.animations[0]);
-
+				
 				scene.add(model);
+				// Colision
+				//sObj = new THREE.Box3().setFromObject(model);
+
 				action.play();
 				action.setLoop(THREE.Loop);
 				action.timeScale = 500;
@@ -259,7 +256,6 @@
 				model.name = "Pulpo";
 			});
 
-
 			//Tiburon
 			loader.load('assets/FBX/AnimacionesTiburon.fbx', model => {
 				var mixer = new THREE.AnimationMixer(model);
@@ -272,6 +268,7 @@
 				//Position
 				model.position.z = 25; //frente(+) + atras(-)
 				model.position.x = -30; //izq(-) + der(+)
+				model.position.y = -1.50;
 
 				//Rotation
 				model.rotation.y = THREE.Math.degToRad(-45);
@@ -359,6 +356,8 @@
 
 			if(keys["X"]){
 				cube.rotation.x = THREE.Math.degToRad(-90);
+				//Colision
+				Colisiona(cubeSmash);
 				yaw = 0;
 				forward = 0;
 				
@@ -372,11 +371,13 @@
 				// camera.translateZ(forward * deltaTime);
 				cube.translateZ( forward * deltaTime);
 				cube.translateX(yaw * deltaTime);
+				cubeSmash.translateZ( forward * deltaTime);
+				cubeSmash.translateX(yaw * deltaTime);
 				objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
-
 
 			}
 			
+
 			texturewater.offset.x +=.0003;
 			// cube.rotation.y += yaw * deltaTime; 
 			renderer.render(scene, camera);
@@ -408,36 +409,101 @@
 			grid.position.y = -1;
 			//scene.add(grid);
 
+
+			//-------CUBOS---------------
 			var material = new THREE.MeshPhongMaterial({
 				color: new THREE.Color(0.1, 1.0, 0.0),
 				opacity: .0,
 				transparent: true,
 			});
 
+			var material2 = new THREE.MeshPhongMaterial({
+				color: new THREE.Color(0.1, 1.0, 0.0),
+				opacity: .7,
+				transparent: true,
+			});
+
+
+			//-----CUBO MAZO------------
 			var geometry = new THREE.BoxGeometry(1, 1, 1);
 			cube = new THREE.Mesh(geometry, material);
 			cube.position.y = 2;
-
-			
-
 			cube.position.x = 0;
 			cube.position.z = 20;
-
-			// cube2.position.x = 20;	
-			// cube2.position.x = 20;
-			
 			scene.add(cube);
 			
+			//----Cubo golpe---------
+			cubeSmash = new THREE.Mesh(geometry, material);
+			cubeSmash.scale.x = 5;
+			cubeSmash.scale.y = 5;
+			cubeSmash.scale.z = 5;
+
+			cubeSmash.position.y = 8.90;
+			cubeSmash.position.z = 10;
+			scene.add(cubeSmash);
+
+			//---CUBOS COLISION-----------
 
 			camera.position.y = 30;
 			camera.position.z = 60;
+
+			createCubes(geometry, material2, cubesCol[1], 25,3,28, 7, 7,7);
+			createCubes(geometry, material2, cubesCol[2], 12,3,15, 7, 7,7);
+			createCubes(geometry, material2, cubesCol[3], -10,3,15, 7, 7,7);
+			createCubes(geometry, material2, cubesCol[4], -30,3,25,10, 10,10);
+			createCubes(geometry, material2, cubesCol[5], 0,3,25,7, 7,7);
+
 			// camera.rotation.y = THREE.Math.degToRad(-45);
+			
 			camera.rotation.x = THREE.Math.degToRad(-38);  //cambio a 38
 			$("#scene-section").append(renderer.domElement);
+			
 		}
 
 		function createSkydome(){
+			var skyDom = new THREE.SphereGeometry(166, 25 ,25);
+			var loader = new THREE.TextureLoader(),
+			texture = loader.load("../sources/Sky.png");
+			var material = new THREE.MeshPhongMaterial({ 
+        	map: texture,
+			});
+			var sky = new THREE.Mesh(skyDom, material);
+    		sky.material.side = THREE.BackSide;
+			sky.position.z = 40;
+			sky.position.y = 4;
+    		scene.add(sky);
+		}
+
+		function createCubes(Pgeometry, Pmaterial, Pname, Px, Py,Pz, P_sx, P_sy, P_sz){
+			Pname = new THREE.Mesh(Pgeometry, Pmaterial);
+			Pname.position.x = Px;
+			Pname.position.y = Py;
+			Pname.position.z = Pz;
 			
+
+			Pname.scale.x = P_sx;
+			Pname.scale.z = P_sy;
+			Pname.scale.y = P_sz;
+
+			scene.add(Pname);
+			collidableMeshList.push(Pname);
+		}
+
+		function Colisiona(CuboMazo){
+				var originPoint = CuboMazo.position.clone();
+				for(var vertexIndex = 0; vertexIndex < CuboMazo.geometry.vertices.length; vertexIndex++){
+					var localVextex = CuboMazo.geometry.vertices[vertexIndex].clone();
+					var globalVertex = localVextex.applyMatrix4(CuboMazo.matrix);
+					var directionVector = globalVertex.sub(CuboMazo.position);
+
+					var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+					var collisionResults = ray.intersectObjects(collidableMeshList);
+
+					if(collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
+					$("#Colision").append("<p>Hola hay colision</p>")
+					}else $("#Colision").append("<p></p>")
+
+				}
 		}
 
 	</script>
@@ -449,6 +515,8 @@
 <body>
 
 	<div id="scene-section"></div>
+
+	<div id="Colision"></div>
 
 </body>
 </html>
