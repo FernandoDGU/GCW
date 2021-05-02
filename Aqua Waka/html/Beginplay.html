@@ -3,12 +3,27 @@
 
 <head>
     <title>AquaWaka</title>
+    <script type="text/javascript" src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+    <!--<script type="text/javascript" src="js/libs/jquery/music.js"></script>-->
     <link rel="icon" href="../sources/aquawakaICON.png">
     <link rel="stylesheet" type="text/css" href="../css/bplay.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <script type="text/javascript">
+        var sound = $("#bubble")[0];
+        $("#btnPlayGame")
+        .mouseenter(function() {
+            sound.play();
+        });
+    </script>
+
 </head>
 
 <body>
+    <!--Audios-->
+    <audio src="../sounds/AWmusic.mp3" autoplay="autoplay" id="audioBegin"></audio>
+    <audio src="../sounds/newbubble.mp3" preload="auto" id="bubble"></audio>
+
     <div class="container">
         <div class="row">
             <div id="coltitle" class="col">
@@ -17,20 +32,20 @@
         </div>
         <div class="row">
             <div class="col">
-                <a href="PlayScreen.html"><input type="image" id="btnPlayGame" name="btnPG" src="../sources/btnplay.png" alt="Play"></a>
+                <a href="PlayScreen.html"><input type="image" id="btnPlayGame" name="btnPG" src="../sources/btnplay.png" alt="Play" onmousedown="document.getElementById('bubble').play()"></a>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <a href="MultiPlayScreen.html"><input type="image" id="btnMultip" name="btnMP" src="../sources/btnMultiplayer.png" alt="Players"></a>
-                <input type="image" id="btnControls" name="btnC" src="../sources/btncontrols.png" alt="Controls" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                <input type="image" id="btnControls" name="btnC" src="../sources/btncontrols.png" alt="Controls" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" onclick="document.getElementById('bubble').play()">
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <input type="image" id="btnLeaders" name="btnL" src="../sources/btnleaders.png" alt="Leaders"
-                data-bs-toggle="modal" data-bs-target="#exampleModalLong">
-                <input type="image" id="btnSettings" name="btnS" src="../sources/btnsettings.png" alt="Settings" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                data-bs-toggle="modal" data-bs-target="#exampleModalLong" onclick="document.getElementById('bubble').play()">
+                <input type="image" id="btnSettings" name="btnS" src="../sources/btnsettings.png" alt="Settings" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="document.getElementById('bubble').play()">
                 <!--Lo Lleva al modal-->
             </div>
         </div>
@@ -45,18 +60,18 @@
                 <img id="sigsettings" class="img-fluid" src="../sources/signalsettings2.png">
                 <div class="filabotones row justify-content-center">
                     <div class="col ">
-                        <input type="image" class="img-fluid" id="btnAccept" name="btnAS" src="../sources/accept.png" alt="ok">
+                        <input type="image" class="img-fluid" id="btnAccept" name="btnAS" src="../sources/accept.png" alt="ok" onclick="document.getElementById('bubble').play()">
                     </div>
                     <div class="col ">
-                        <input type="image" class="img-fluid" id="btnCancel" name="btnCS" src="../sources/cancel.png" alt="ok">
+                        <input type="image" class="img-fluid" id="btnCancel" name="btnCS" src="../sources/cancel.png" alt="ok" onclick="document.getElementById('bubble').pause()">
                     </div>
                 </div>
                 <div class="filabotones2 row justify-content-center">
                     <div class="col ">
-                        <input type="image" class="img-fluid" id="btnAccept2" name="btnAS2" src="../sources/accept.png" alt="ok">
+                        <input type="image" class="img-fluid" id="btnAccept2" name="btnAS2" src="../sources/accept.png" alt="ok" onclick="document.getElementById('audioBegin').play()">
                     </div>
                     <div class="col ">
-                        <input type="image" class="img-fluid" id="btnCancel2" name="btnCS2" src="../sources/cancel.png" alt="ok">
+                        <input type="image" class="img-fluid" id="btnCancel2" name="btnCS2" src="../sources/cancel.png" alt="ok" onclick="document.getElementById('audioBegin').pause()">
                     </div>
                 </div>
             </div>
