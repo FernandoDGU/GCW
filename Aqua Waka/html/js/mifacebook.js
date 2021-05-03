@@ -1,6 +1,6 @@
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : '482980112738423',
+    appId      : '130670722416740',
     xfbml      : true,
     version    : 'v2.9'
   });
@@ -16,11 +16,11 @@ window.fbAsyncInit = function() {
  }(document, 'script', 'facebook-jssdk'));
 
 
-function shareScore(score) {
+function shareScore(username,score) {
   FB.ui({
     method:'share',
     href:'https://google.com',
     hastag:"#MILoMejor",
-    quote:"Mi puntuacion: " + score
+    quote: username+" "+"mi puntuacion: " + score
   }, function(response){});
 }

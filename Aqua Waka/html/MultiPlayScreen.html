@@ -5,6 +5,23 @@
     <link rel="icon" href="../sources/aquawakaICON.png">
     <link rel="stylesheet" type="text/css" href="../css/gamescreen.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script type="text/javascript" src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/mifacebook.js"></script>
+
+    <script type="text/javascript">
+
+        $("#btnUp").click(function(){
+            shareFB();
+        });
+
+        function shareFB() {
+            alert("exito");
+		    var score = $("#scoreVictory").text();
+            var name = $("#usernameinput").val();
+            debugger;
+		    shareScore(name,score);
+	    }
+    </script>
 
 </head>
 <body >
@@ -56,7 +73,7 @@
                             	<p id="scoreVictory">3400</p>
                                 <label id="userinp" for="usernameinput">SHARE YOUR SCORE</label>
                                 <input type="text" class="form-control" id="usernameinput" placeholder="Enter an Username">
-                                <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal">
+                                <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal" onclick="shareFB()">
                             </div>
                         </form>
                         <button id="btnFB" type="button" class="btn btn-primary">Share with Facebook</button>
