@@ -25,6 +25,7 @@
 		var texturewater;
 		var objs = [];
 		var cubesCol = [];
+		var i;
 		
 		//Colisiones var
 		var collidableMeshList = [];
@@ -37,7 +38,7 @@
 		$(document).ready(function(){
 			
 			setupScene();
-
+			
 			//Back Island
 			loadOBJWithMTL("assets/Island/", "Island.obj", "Island.mtl", (object) => {
 
@@ -461,11 +462,11 @@
 			camera.position.y = 30;
 			camera.position.z = 60;
 
-			createCubes(geometry, material, cubesCol[1], 25,3,28, 7, 7,7);
-			createCubes(geometry, material, cubesCol[2], 12,3,15, 7, 7,7);
-			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7);
-			createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10);
-			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7);
+			createCubes(geometry, material, cubesCol[1], 25,3,28, 7, 7,7, "Piranha"); //Piranha
+			createCubes(geometry, material, cubesCol[2], 12,3,15, 7, 7,7, "Globo"); //Globo
+			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo"); // Pulpo
+			createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon"); // TIBURON
+			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish"); //Pez raro
 
 			// camera.rotation.y = THREE.Math.degToRad(-45);
 			
@@ -492,7 +493,7 @@
     		scene.add(sky);
 		}
 
-		function createCubes(Pgeometry, Pmaterial, Pname, Px, Py,Pz, P_sx, P_sy, P_sz){
+		function createCubes(Pgeometry, Pmaterial, Pname, Px, Py,Pz, P_sx, P_sy, P_sz, name){
 			Pname = new THREE.Mesh(Pgeometry, Pmaterial);
 			Pname.position.x = Px;
 			Pname.position.y = Py;
@@ -504,6 +505,7 @@
 			Pname.scale.y = P_sz;
 
 			scene.add(Pname);
+			Pname.name = name;
 			collidableMeshList.push(Pname);
 		}
 
@@ -516,9 +518,38 @@
 
 					var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
 					var collisionResults = ray.intersectObjects(collidableMeshList);
+					
+					// && collisionResults[0].object.name == "cubo5"
+					if(collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ){
 
-					if(collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
-					$("#Colision").append("<p>Hola hay colision</p>")
+						switch(collisionResults[0].object.name){
+							case "Piranha": 
+								i = "Piranha";
+								break;	
+							
+							case "LightFish": 
+								// i = i +1;
+								i = "LightFish"
+								break;
+
+							case "Globo": 
+								// i = i +1;
+								i = "Globo"
+								break;
+
+							case "Pulpo": 
+								// i = i +1;
+								i = "Pulpo"
+								break;
+
+							case "Tiburon": 
+								// i = i +1;
+								i = "Tiburon"
+								break;
+						}
+						
+					$("#Colision").html("<p>Puntaje: " + i + "</p>")
+					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
 					}else $("#Colision").append("<p></p>")
 
 				}
