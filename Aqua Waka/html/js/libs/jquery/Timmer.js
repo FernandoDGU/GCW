@@ -1,10 +1,10 @@
 //Timmer
         var n = 0;
-        var interval; //tiene el reloj interno
+        var intervalo; //tiene el reloj interno
         var isPaused = false; //Para la pausa
 
                     var l = document.getElementById("timming");
-                    interval=window.setInterval(function(){
+                    intervalo=window.setInterval(function(){
                         if(!isPaused)
                         {
                             //l.innerHTML = n;

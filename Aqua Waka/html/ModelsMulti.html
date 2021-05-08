@@ -25,6 +25,7 @@
 		var texturewater;
 		var objs = [];
 		var cubesCol = [];
+		var mov = [];
 
 		//Colisiones var
 		var collidableMeshList = [];
@@ -414,6 +415,8 @@
 
 
 			    objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
+				// Mov_Y(objs[1], mov);
+
 			}
 			
 			// cube.rotation.y += yaw * deltaTime; 
@@ -580,6 +583,17 @@
 				}
 		}
 
+		function Mov_Y(Model, valor){
+
+			if(valor > 10){
+				Model.position.y -= valor; 
+				valor--;	
+			}else{
+				Model.position.y += valor;
+				valor++;	
+			}
+			
+		}
 	</script>
 
 </head>

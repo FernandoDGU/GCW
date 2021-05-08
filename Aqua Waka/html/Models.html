@@ -11,8 +11,8 @@
 	<script type="text/javascript" src="js/libs/three/FBXLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/inflate.min.js"></script>
 	<script type="module" src="js/libs/three/Math/Box3.js"></script>
-	
-	
+
+
 
 	<script type="text/javascript">
 		
@@ -20,12 +20,13 @@
 		var controls, clock, deltaTime;
 		var objects = [];
 		var keys = {};
-		var cube, cube2, cubeSmash;
+		var cube, cube2, cubeSmash, cube3;
 		var isWorldReady = [false, false];
 		var texturewater;
 		var objs = [];
 		var cubesCol = [];
 		var i;
+		var movpos;
 		
 		//Colisiones var
 		var collidableMeshList = [];
@@ -182,21 +183,27 @@
 				var mixer = new THREE.AnimationMixer(model);
 
 				//Scale
-				model.scale.x = 1.20;
-				model.scale.y = 1.20;
-				model.scale.z = 1.20;
+				// model.scale.x = 1.20;
+				// model.scale.y = 1.20;
+				// model.scale.z = 1.20;
+
+				model.scale.x = 0.20;
+				model.scale.y = 0.20;
+				model.scale.z = 0.20;
 
 				//Position
-				model.position.z = 28; //frente(+) + atras(-)
-				model.position.x = 25; //izq(-) + der(+)
-				model.position.y = -1;
+				// model.position.z = 28; //frente(+) + atras(-)
+				// model.position.x = 25; //izq(-) + der(+)
+				model.position.y = 0.5; //-1
 
 				//Rotation
 				model.rotation.x = THREE.Math.degToRad(-25);
 
 				var action = mixer.clipAction(model.animations[0]);
 				
-				scene.add(model);
+				//scene.add(model);
+				//cube3.add(model);
+				// cubesCol.add(model);
 				// Colision
 				//sObj = new THREE.Box3().setFromObject(model);
 
@@ -207,60 +214,25 @@
 				model.name = "Pirana";
 			});
 
-			//Pez Globo
-			loader.load('assets/FBX/AnimacionesGlobo.fbx', model => {
-				var mixer = new THREE.AnimationMixer(model);
 
-				//Scale
-				model.scale.x = 1.10;
-				model.scale.y = 1.10;
-				model.scale.z = 1.10;
+			
+			//If para cargar niveles
+			//[Nivel 1]
 
-				//Position
-				model.position.z = 15; //frente(+) + atras(-)
-				model.position.x = 12; //izq(-) + der(+)
-				model.position.y = 0.5;
+			//FRENTE
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 38, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 40, 'Pulpo2', loader, 4.20, 4.20,4.20,-25, 0);
 
-				//Rotation
-				model.rotation.y = THREE.Math.degToRad(-90);
-				model.rotation.x = THREE.Math.degToRad(-25);
-
-				var action = mixer.clipAction(model.animations[0]);
-
-				scene.add(model);
-				action.play();
-				action.setLoop(THREE.Loop);
-				action.timeScale = 500;
-				objs.push({model, mixer});
-				model.name = "Globo";
-			});
-
-			//Pulpo
-			loader.load('assets/FBX/AnimacionesPulpoHelp.fbx', model => {
-				var mixer = new THREE.AnimationMixer(model);
-
-				//Scale
-				model.scale.x = 4.20;
-				model.scale.y = 4.20;
-				model.scale.z = 4.20;
-
-				//Position
-				model.position.z = 15; //frente(+) + atras(-)
-				model.position.x = -10;//izq(-) + der(+)
-				model.position.y = 2;
-
-				//Rotation
-				model.rotation.x = THREE.Math.degToRad(-25);
-
-				var action = mixer.clipAction(model.animations[0]);
-
-				scene.add(model);
-				action.play();
-				action.setLoop(THREE.Loop);
-				action.timeScale = 500;
-				objs.push({model, mixer});
-				model.name = "Pulpo";
-			});
+			//Medio
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -25, 2, 25, 'Pulpo3', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 2, 25, 'Pulpo4', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 25, 2, 25, 'Pulpo5', loader, 4.20, 4.20,4.20,-25, 0);
+			
+			//ATRAS
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 10, 'Globo2', loader, 1.10, 1.10,1.10,-25, -90);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 10, 'Pulpo6', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 10, 'Pulpo7', loader, 4.20, 4.20,4.20,-25, 0);
 
 			//Tiburon
 			loader.load('assets/FBX/AnimacionesTiburon.fbx', model => {
@@ -273,7 +245,7 @@
 
 				//Position
 				model.position.z = 25; //frente(+) + atras(-)
-				model.position.x = -30; //izq(-) + der(+)
+				model.position.x = -25; //izq(-) + der(+)
 				model.position.y = -1.50;
 
 				//Rotation
@@ -282,7 +254,7 @@
 
 				var action = mixer.clipAction(model.animations[0]);
 
-				scene.add(model);
+				//scene.add(model);
 				action.play();
 				action.setLoop(THREE.Loop);
 				action.timeScale = 500;
@@ -309,24 +281,45 @@
 
 				var action = mixer.clipAction(model.animations[0]);
 
-				scene.add(model);
+				//scene.add(model);
 				action.play();
 				action.setLoop(THREE.Loop);
 				action.timeScale = 500;
 				objs.push({model, mixer});
 				model.name = "Lightfish";
 			});
-
-
-			// ---------- Definicion Particula -----------------
-			// particleTexture = THREE.ImageUtils.loadTexture('sources/spark.png');
-			// particleGroup = new THREE.Object3D();
-			// particleAttributes = { startSize: [], startPosition: [], randomness: [] };
-
-
 			
 		});
 
+		function ModelsFbx(nombreArchivo, positionx, positiony, positionz,
+		 name, loader, scalax, scalay, scalaz, rotationx, rotationy){
+			loader.load(nombreArchivo, model => {
+				var mixer = new THREE.AnimationMixer(model);
+
+				//Scale
+				model.scale.x = scalax;
+				model.scale.y = scalay;
+				model.scale.z = scalaz;
+
+				//Position
+				model.position.z = positionz; //frente(+) + atras(-)
+				model.position.x = positionx; //izq(-) + der(+)
+				model.position.y = positiony;
+
+				//Rotation
+				model.rotation.y = THREE.Math.degToRad(rotationy);
+				model.rotation.x = THREE.Math.degToRad(rotationx);
+
+				var action = mixer.clipAction(model.animations[0]);
+
+				scene.add(model);
+				action.play();
+				action.setLoop(THREE.Loop);
+				action.timeScale = 500;
+				objs.push({model, mixer});
+				model.name = name;
+			});
+		}
 
 		function loadOBJWithMTL(path, objFile, mtlFile, onLoadCallback) {
 			var mtlLoader = new THREE.MTLLoader();
@@ -357,6 +350,7 @@
 
 			yaw = 0;
 			forward = 0;
+			movpos = 0;
 			if (keys["A"]) {
 				yaw = -20;
 			} else if (keys["D"]) {
@@ -367,7 +361,7 @@
 			} else if (keys["S"]) {
 				forward = 20;
 			}
-
+			
 			if(keys["X"]){
 				cube.rotation.x = THREE.Math.degToRad(-90);
 				//Colision
@@ -379,6 +373,12 @@
 				
 				cube.rotation.x = THREE.Math.degToRad(0);
 			}
+
+			if(keys["Y"]){
+				movpos = 20;
+			}else if (keys["H"]){
+				movpos = -20;
+			}
 			if (isWorldReady[0]) {
 				
 				// camera.rotation.y += yaw * deltaTime;
@@ -389,6 +389,9 @@
 				cubeSmash.translateX(yaw * deltaTime);
 				objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
 				
+
+				cube3.translateY (movpos * deltaTime)
+				// Mov_Y(cube, mov[0]);
 
 			}
 			
@@ -438,6 +441,12 @@
 				transparent: true,
 			});
 
+			var material3 = new THREE.MeshPhongMaterial({
+				color: new THREE.Color(0.1, 1.0, 1.0),
+				opacity: .7,
+				transparent: true,
+			});
+
 
 			//-----CUBO MAZO------------
 			var geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -457,23 +466,39 @@
 			cubeSmash.position.z = 10;
 			scene.add(cubeSmash);
 
+
+			//------------------------------------------
+			//Cubos para mover
+			cube3 = new THREE.Mesh(geometry, material3);
+			cube3.position.y = -3;
+			cube3.position.x = 25;
+			cube3.position.z = 25;
+			cube3.scale.x = 5;
+			cube3.scale.y = 5;
+			cube3.scale.z = 5;
+			cube3.name = "cube03";
+			scene.add(cube3);
+
+			// scene.add(cube3);
+
+
 			//---CUBOS COLISION-----------
 
 			camera.position.y = 30;
 			camera.position.z = 60;
 
-			createCubes(geometry, material, cubesCol[1], 25,3,28, 7, 7,7, "Piranha"); //Piranha
-			createCubes(geometry, material, cubesCol[2], 12,3,15, 7, 7,7, "Globo"); //Globo
+			//Acomodar posiciones de cubos en modelos
+			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha"); //Piranha 25, 3, 28
+			createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo"); //Globo
 			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo"); // Pulpo
 			createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon"); // TIBURON
 			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish"); //Pez raro
 
-			// camera.rotation.y = THREE.Math.degToRad(-45);
-			
+
+
+			// camera.rotation.y = THREE.Math.degToRad(-45);	
 			//------------Creacion de particula-----------------
 			createParticle2();
-			
-			// createParticle(particleTexture,particleGroup,particleAttributes,totalParticles,radiusRange);
 			camera.rotation.x = THREE.Math.degToRad(-38);  //cambio a 38
 			$("#scene-section").append(renderer.domElement);
 			
@@ -504,7 +529,13 @@
 			Pname.scale.z = P_sy;
 			Pname.scale.y = P_sz;
 
-			scene.add(Pname);
+			
+			if(name == "Piranha"){ 
+				cube3.add(Pname);
+			}
+			else{
+				scene.add(Pname);
+			}
 			Pname.name = name;
 			collidableMeshList.push(Pname);
 		}
@@ -550,7 +581,7 @@
 						
 					$("#Colision").html("<p>Puntaje: " + i + "</p>")
 					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
-					}else $("#Colision").append("<p></p>")
+					}else $("#Colision").html("<p>No colision</p>")
 
 				}
 		}
@@ -626,6 +657,20 @@
 				
 	}
 
+
+		function Mov_Y(Model, valor){
+		
+			if(valor > 10){
+				Model.position.y -= valor; 
+				valor--;	
+			}else{
+				Model.position.y += valor;
+				valor++;	
+			}
+			
+		}
+
+		
 	</script>
 
 </head>
