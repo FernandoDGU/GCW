@@ -139,9 +139,10 @@ body {
 
 #btnFB{
 	background-color: #4267b2 !important;
+	color: white;
 	position: absolute;
-	bottom: 70px;
-    left: 170px;
+	bottom: -40px;
+    left: 35px;
 }
 #scoreVictory{
 	position: absolute;
