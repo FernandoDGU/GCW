@@ -536,7 +536,8 @@
 
 			// camera.rotation.y = THREE.Math.degToRad(-45);	
 			//------------Creacion de particula-----------------
-			createParticle2();
+			createParticle2(30, 8, 45);
+			createParticle2(-32, 8, 45);
 			camera.rotation.x = THREE.Math.degToRad(-38);  //cambio a 38
 			$("#scene-section").append(renderer.domElement);
 			
@@ -655,7 +656,7 @@
 			scene.add(PparticleG);
 		}
 
-		function createParticle2(){
+		function createParticle2(Px, Py, Pz){
 			particleTexture = THREE.ImageUtils.loadTexture( 'assets/spark.png' );
 
 			particleGroup = new THREE.Object3D();
@@ -688,9 +689,10 @@
 				particleAttributes.startPosition.push( sprite.position.clone() );
 				particleAttributes.randomness.push( Math.random() );
 			}
-				particleGroup.position.y = 8;
-				particleGroup.position.x = 30;
-				particleGroup.position.z = 45;
+				
+				particleGroup.position.x = Px; //30
+				particleGroup.position.y = Py; //8
+				particleGroup.position.z = Pz; //45
 				scene.add( particleGroup );
 				
 	}
