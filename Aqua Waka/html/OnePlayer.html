@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Oneplayer</title>
+    <link rel="icon" href="../sources/aquawakaICON.png">
+    <link rel="stylesheet" type="text/css" href="../css/gamescreen.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script type="text/javascript" src="js/mifacebook.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase.js"></script>
+
+    <!-- JS -->
+    <script  script type="text/javascript" src="js/libs/jquery/Timmer.js"></script>
+	<script  script type="text/javascript" src="js/libs/jquery/Firebase.js"></script>
+
+	<script type="text/javascript" src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+
+	<script type="text/javascript" src="js/libs/three/three2.js"></script>
+	<!-- <script type="text/javascript" src="js/libs/three/three.js"></script> -->
+	<script type="text/javascript" src="js/libs/three/MTLLoader.js"></script>
+	<script type="text/javascript" src="js/libs/three/OBJLoader.js"></script>
+	<script type="text/javascript" src="js/libs/three/FBXLoader.js"></script>
+	<script type="text/javascript" src="js/libs/three/inflate.min.js"></script>
+	<script type="module" src="js/libs/three/Math/Box3.js"></script>
+
+	<script  script type="text/javascript" src="js/libs/jquery/Puntos.js"></script>
+
+	<script type="text/javascript">
+
+        $("#btnUp").click(function(){
+            shareFB();
+        });
+
+        function shareFB() {
+            // alert("exito");
+		    var score = $("#scoreVictory").text();
+            var name = $("#usernameinput").val();
+            debugger;
+		    shareScore(name,score);
+	    }      
+
+		$("btnPBack").click(function(){
+            salir();
+        });
+
+        function salir(){
+             if (confirm("Quiere salir del juego?")) {
+                location.href ="Beginplay.html";
+            } else {
+
+            }
+        } 
+
+           
+    </script>
+
+	<script type="text/javascript">
+		
+		var scene, camera, renderer; 
+		var controls, clock, deltaTime;
+		var objects = [];
+		var keys = {};
+		var cube, cube2, cubeSmash, cube3;
+		var isWorldReady = [false, false];
+		var texturewater;
+		var objs = [];
+		var cubesCol = [];
+		var i;
+		var movpos;
+		
+		//Colisiones var
+		var collidableMeshList = [];
+
+		//Particles var
+		var particleTexture, particleGroup, particleAttributes;
+		// var totalParticles = 200;
+		// var radiusRange = 50;
+		localStorage.setItem('Usuario', i);
+		$(document).ready(function(){
+			
+			setupScene();
+			
+			//Back Island
+			loadOBJWithMTL("assets/Island/", "Island.obj", "Island.mtl", (object) => {
+
+				object.position.z = -40;
+
+				object.position.y = -1;
+
+				// object.rotation.y = THREE.Math.degToRad(-90);
+				object.scale.x = 4.0;
+				object.scale.y = 3.5;
+				object.scale.z = 4.0;
+
+				object.rotation.y = THREE.Math.degToRad(90);
+
+				//var isla3 = object.clone();
+				scene.add(object);
+
+				isWorldReady[0] = true;
+			});
+
+			//New Isla Left
+			loadOBJWithMTL("assets/Island/", "newisland.obj", "newisland.mtl", (object) => {
+
+				object.position.x = -60; 
+				object.position.y = -0.5;
+				object.position.z = -2; //delante(+) y atras(-)
+				
+				object.scale.x = 3.0;
+				object.scale.y = 2.5;
+				object.scale.z = 3.0;
+
+				object.rotation.y = THREE.Math.degToRad(112);
+
+				scene.add(object);
+			});
+
+			loadOBJWithMTL("assets/pokeisla/", "KittyIsland.obj", "KittyIsland.mtl", (object) => {
+
+				object.position.x = -70; 
+				object.position.y = -12;
+				object.position.z = -60; //delante(+) y atras(-)
+				
+				object.scale.x = 3.0;
+				object.scale.y = 3.0;
+				object.scale.z = 3.0;
+
+				var isla2 = object.clone();
+				isla2.position.x = 80;
+				object.rotation.y = THREE.Math.degToRad(-50);
+
+				object.rotation.y = THREE.Math.degToRad(50);
+				scene.add(object);
+				scene.add(isla2);
+			});
+
+			loadOBJWithMTL("assets/barcopirata/", "PirateShip.obj", "PirateShip.mtl", (object) => {
+
+				object.position.x = 52;
+				object.position.y = -6; 
+				object.position.z = 7; //delante(+) y atras(-)
+				
+				object.scale.x = 2.0;
+				object.scale.y = 2.0;
+				object.scale.z = 2.0;
+
+				object.rotation.y = THREE.Math.degToRad(180);
+				object.rotation.x = THREE.Math.degToRad(-4);
+				scene.add(object);
+			});
+
+			loadOBJWithMTL("assets/roca/", "roca.obj", "roca.mtl", (object) => {
+
+				object.position.x = -50;
+				object.position.y = -5; 
+				object.position.z = 38; //delante(+) y atras(-)
+				
+				object.scale.x = 2.5;
+				object.scale.y = 2.5;
+				object.scale.z = 2.5;
+
+				var roca2 = object.clone();
+				object.position.x = 50;
+				object.position.y = -5; 
+				object.position.z = 35;
+
+				object.rotation.y = THREE.Math.degToRad(180);
+
+				scene.add(object);
+				scene.add(roca2);
+			});
+
+			loadOBJWithMTL("assets/salvavidas/", "salva.obj", "salva.mtl", (object) => {
+
+				object.position.x = 30;
+				object.position.y = 2; 
+				object.position.z = 45; //delante(+) y atras(-)
+				
+				object.scale.x = 1.2;
+				object.scale.y = 1.2;
+				object.scale.z = 1.2;
+				scene.add(object);
+				
+			});
+
+			loadOBJWithMTL("assets/", "KO_Hammer_Brawl.obj", "KO_Hammer_Brawl.mtl", (object) => {
+
+				object.scale.x = 0.4;
+				object.scale.y = 0.4;
+				object.scale.z = 0.4;
+
+				cube.add(object);
+
+				
+			});
+
+			//Water
+			texturewater = new THREE.TextureLoader().load("../sources/water.png");
+			texturewater.wrapS = texturewater.wrapT = THREE.RepeatWrapping;
+			texturewater.repeat.set(0.6,0.6);
+
+			var floorMaterial = new THREE.MeshBasicMaterial({map: texturewater, side: THREE.DoubleSide});
+			var floorGeometry = new THREE.PlaneGeometry(300, 200, 10, 10);
+			var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+			floor.position.y = -0.12;
+			floor.rotation.x = Math.PI /2;
+			scene.add(floor);
+
+			
+			render();
+			document.addEventListener('keydown', onKeyDown);
+			document.addEventListener('keyup', onKeyUp);	
+
+			//------------Skydome--------------		
+			createSkydome();
+
+			//========================CARGA DE FBX
+
+			//Piranha
+			var loader = new THREE.FBXLoader();
+			loader.load('assets/FBX/Pira.fbx', model => {
+				var mixer = new THREE.AnimationMixer(model);
+
+				//Scale
+				// model.scale.x = 1.20;
+				// model.scale.y = 1.20;
+				// model.scale.z = 1.20;
+
+				model.scale.x = 0.20;
+				model.scale.y = 0.20;
+				model.scale.z = 0.20;
+
+				//Position
+				// model.position.z = 28; //frente(+) + atras(-)
+				// model.position.x = 25; //izq(-) + der(+)
+				model.position.y = 0.5; //-1
+
+				//Rotation
+				model.rotation.x = THREE.Math.degToRad(-25);
+
+				var action = mixer.clipAction(model.animations[0]);
+				
+				//scene.add(model);
+				//cube3.add(model);
+				// cubesCol.add(model);
+				// Colision
+				//sObj = new THREE.Box3().setFromObject(model);
+
+				action.play();
+				action.setLoop(THREE.Loop);
+				action.timeScale = 500;
+				objs.push({model, mixer});
+				model.name = "Pirana";
+			});
+			
+			//If para cargar niveles
+			//[Nivel 1]
+
+			//FRENTE
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 38, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 40, 'Pulpo2', loader, 4.20, 4.20,4.20,-25, 0);
+
+			//Medio
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -25, 2, 25, 'Pulpo3', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 2, 25, 'Pulpo4', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 25, 2, 25, 'Pulpo5', loader, 4.20, 4.20,4.20,-25, 0);
+			
+			//ATRAS
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 10, 'Globo2', loader, 1.10, 1.10,1.10,-25, -90);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 10, 'Pulpo6', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 10, 'Pulpo7', loader, 4.20, 4.20,4.20,-25, 0);
+
+			//Tiburon
+			loader.load('assets/FBX/AnimacionesTiburon.fbx', model => {
+				var mixer = new THREE.AnimationMixer(model);
+
+				//Scale
+				model.scale.x = 0.25;
+				model.scale.y = 0.25;
+				model.scale.z = 0.25;
+
+				//Position
+				model.position.z = 25; //frente(+) + atras(-)
+				model.position.x = -25; //izq(-) + der(+)
+				model.position.y = -1.50;
+
+				//Rotation
+				model.rotation.y = THREE.Math.degToRad(-45);
+				model.rotation.x = THREE.Math.degToRad(-55);
+
+				var action = mixer.clipAction(model.animations[0]);
+
+				//scene.add(model);
+				action.play();
+				action.setLoop(THREE.Loop);
+				action.timeScale = 500;
+				objs.push({model, mixer});
+				model.name = "Tiburon";
+			});
+
+			//LightFish
+			loader.load('assets/FBX/LightFish.fbx', model => {
+				var mixer = new THREE.AnimationMixer(model);
+
+				//Scale
+				model.scale.x = 1.20;
+				model.scale.y = 1.20;
+				model.scale.z = 1.20;
+
+				//Position
+				model.position.z = 25; //frente(+) + atras(-)
+				model.position.x = 0; //izq(-) + der(+)
+				model.position.y = 2.5;
+
+				//Rotation
+				model.rotation.x = THREE.Math.degToRad(-5);
+
+				var action = mixer.clipAction(model.animations[0]);
+
+				//scene.add(model);
+				action.play();
+				action.setLoop(THREE.Loop);
+				action.timeScale = 500;
+				objs.push({model, mixer});
+				model.name = "Lightfish";
+			});
+			
+		});
+
+		function ModelsFbx(nombreArchivo, positionx, positiony, positionz,
+		 name, loader, scalax, scalay, scalaz, rotationx, rotationy){
+			loader.load(nombreArchivo, model => {
+				var mixer = new THREE.AnimationMixer(model);
+
+				//Scale
+				model.scale.x = scalax;
+				model.scale.y = scalay;
+				model.scale.z = scalaz;
+
+				//Position
+				model.position.z = positionz; //frente(+) + atras(-)
+				model.position.x = positionx; //izq(-) + der(+)
+				model.position.y = positiony;
+
+				//Rotation
+				model.rotation.y = THREE.Math.degToRad(rotationy);
+				model.rotation.x = THREE.Math.degToRad(rotationx);
+
+				var action = mixer.clipAction(model.animations[0]);
+
+				scene.add(model);
+				action.play();
+				action.setLoop(THREE.Loop);
+				action.timeScale = 500;
+				objs.push({model, mixer});
+				model.name = name;
+			});
+		}
+
+		function loadOBJWithMTL(path, objFile, mtlFile, onLoadCallback) {
+			var mtlLoader = new THREE.MTLLoader();
+			mtlLoader.setPath(path);
+			mtlLoader.load(mtlFile, (materials) => {
+				
+				var objLoader = new THREE.OBJLoader();
+				objLoader.setMaterials(materials);
+				objLoader.setPath(path);
+				objLoader.load(objFile, (object) => {
+					onLoadCallback(object);
+				});
+
+			});
+		}	
+
+		function onKeyDown(event) {
+			keys[String.fromCharCode(event.keyCode)] = true;
+		}
+		function onKeyUp(event) {
+			keys[String.fromCharCode(event.keyCode)] = false;
+		}
+
+		function render(){
+
+			requestAnimationFrame(render);
+			deltaTime = clock.getDelta();	
+
+			yaw = 0;
+			forward = 0;
+			movpos = 0;
+			if (keys["A"]) {
+				yaw = -20;
+			} else if (keys["D"]) {
+				yaw = 20;
+			}
+			if (keys["W"]) {
+				forward = -20;
+			} else if (keys["S"]) {
+				forward = 20;
+			}
+			
+			if(keys["X"]){
+				cube.rotation.x = THREE.Math.degToRad(-90);
+				//Colision
+				Colisiona(cubeSmash);
+				yaw = 0;
+				forward = 0;
+				
+			}else {
+				
+				cube.rotation.x = THREE.Math.degToRad(0);
+			}
+
+			if(keys["Y"]){
+				movpos = 20;
+			}else if (keys["H"]){
+				movpos = -20;
+			}
+			if (isWorldReady[0]) {
+				
+				// camera.rotation.y += yaw * deltaTime;
+				// camera.translateZ(forward * deltaTime);
+				cube.translateZ( forward * deltaTime);
+				cube.translateX(yaw * deltaTime);
+				cubeSmash.translateZ( forward * deltaTime);
+				cubeSmash.translateX(yaw * deltaTime);
+				objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
+				
+
+				cube3.translateY (movpos * deltaTime)
+				// Mov_Y(cube, mov[0]);
+
+			}
+			
+
+			texturewater.offset.x +=.0003;
+			// cube.rotation.y += yaw * deltaTime; 
+			renderer.render(scene, camera);
+			// camera.lookAt(objectMov.position);
+
+		}
+
+		function setupScene() {		
+			var visibleSize = { width: 800, height: 400};
+			clock = new THREE.Clock();		
+			scene = new THREE.Scene();
+			camera = new THREE.PerspectiveCamera(75, visibleSize.width / visibleSize.height, 0.1, 200);
+			camera.position.z = 0;
+			// camera.position.y = 5;
+
+			renderer = new THREE.WebGLRenderer( {precision: "mediump" } );
+			renderer.setClearColor(new THREE.Color(0, 1, .9));
+			renderer.setPixelRatio(visibleSize.width / visibleSize.height);
+			renderer.setSize(visibleSize.width, visibleSize.height);
+
+			var ambientLight = new THREE.AmbientLight(new THREE.Color(1, 1, 1), 1.0);
+			scene.add(ambientLight);
+
+			var directionalLight = new THREE.DirectionalLight(new THREE.Color(1, 1, 0), 0.4);
+			directionalLight.position.set(0, 0, 1);
+			scene.add(directionalLight);
+
+			var grid = new THREE.GridHelper(50, 10, 0xffffff, 0xffffff);
+			grid.position.y = -1;
+			//scene.add(grid);
+
+
+			//-------CUBOS---------------
+			var material = new THREE.MeshPhongMaterial({
+				color: new THREE.Color(0.1, 1.0, 0.0),
+				opacity: .0,
+				transparent: true,
+			});
+
+			var material2 = new THREE.MeshPhongMaterial({
+				color: new THREE.Color(0.1, 1.0, 0.0),
+				opacity: .7,
+				transparent: true,
+			});
+
+			var material3 = new THREE.MeshPhongMaterial({
+				color: new THREE.Color(0.1, 1.0, 1.0),
+				opacity: .7,
+				transparent: true,
+			});
+
+
+			//-----CUBO MAZO------------
+			var geometry = new THREE.BoxGeometry(1, 1, 1);
+			cube = new THREE.Mesh(geometry, material);
+			cube.position.y = 2;
+			cube.position.x = 0;
+			cube.position.z = 20;
+			scene.add(cube);
+			
+			//----Cubo golpe---------
+			cubeSmash = new THREE.Mesh(geometry, material);
+			cubeSmash.scale.x = 5;
+			cubeSmash.scale.y = 5;
+			cubeSmash.scale.z = 5;
+
+			cubeSmash.position.y = 8.90;
+			cubeSmash.position.z = 10;
+			scene.add(cubeSmash);
+
+
+			//------------------------------------------
+			//Cubos para mover
+			cube3 = new THREE.Mesh(geometry, material3);
+			cube3.position.y = -3;
+			cube3.position.x = 25;
+			cube3.position.z = 25;
+			cube3.scale.x = 5;
+			cube3.scale.y = 5;
+			cube3.scale.z = 5;
+			cube3.name = "cube03";
+			scene.add(cube3);
+
+			// scene.add(cube3);
+
+
+			//---CUBOS COLISION-----------
+
+			camera.position.y = 30;
+			camera.position.z = 60;
+
+			//Acomodar posiciones de cubos en modelos
+			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha"); //Piranha 25, 3, 28
+			createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo"); //Globo
+			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo"); // Pulpo
+			createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon"); // TIBURON
+			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish"); //Pez raro
+
+
+
+			// camera.rotation.y = THREE.Math.degToRad(-45);	
+			//------------Creacion de particula-----------------
+			createParticle2();
+			camera.rotation.x = THREE.Math.degToRad(-38);  //cambio a 38
+			$("#scene-section").append(renderer.domElement);
+			
+		}
+
+		function createSkydome(){
+			var skyDom = new THREE.SphereGeometry(166, 25 ,25);
+			var loader = new THREE.TextureLoader(),
+			texture = loader.load("../sources/Sky.png");
+			var material = new THREE.MeshPhongMaterial({ 
+        	map: texture,
+			});
+			var sky = new THREE.Mesh(skyDom, material);
+    		sky.material.side = THREE.BackSide;
+			sky.position.z = 40;
+			sky.position.y = 4;
+    		scene.add(sky);
+		}
+
+		function createCubes(Pgeometry, Pmaterial, Pname, Px, Py,Pz, P_sx, P_sy, P_sz, name){
+			Pname = new THREE.Mesh(Pgeometry, Pmaterial);
+			Pname.position.x = Px;
+			Pname.position.y = Py;
+			Pname.position.z = Pz;
+			
+
+			Pname.scale.x = P_sx;
+			Pname.scale.z = P_sy;
+			Pname.scale.y = P_sz;
+
+			
+			if(name == "Piranha"){ 
+				cube3.add(Pname);
+			}
+			else{
+				scene.add(Pname);
+			}
+			Pname.name = name;
+			collidableMeshList.push(Pname);
+		}
+
+		function Colisiona(CuboMazo){
+				var originPoint = CuboMazo.position.clone();
+				for(var vertexIndex = 0; vertexIndex < CuboMazo.geometry.vertices.length; vertexIndex++){
+					var localVextex = CuboMazo.geometry.vertices[vertexIndex].clone();
+					var globalVertex = localVextex.applyMatrix4(CuboMazo.matrix);
+					var directionVector = globalVertex.sub(CuboMazo.position);
+
+					var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+					var collisionResults = ray.intersectObjects(collidableMeshList);
+					
+					// && collisionResults[0].object.name == "cubo5"
+					if(collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ){
+
+						switch(collisionResults[0].object.name){
+							case "Piranha": 
+								i = "Piranha";
+								break;	
+							
+							case "LightFish": 
+								// i = i +1;
+								i = "LightFish"
+								break;
+
+							case "Globo": 
+								// i = i +1;
+								i = "Globo"
+								break;
+
+							case "Pulpo": 
+								// i = i +1;
+								i = "Pulpo"
+								break;
+
+							case "Tiburon": 
+								// i = i +1;
+								i = "Tiburon"
+								break;
+						}
+						
+					$("#pts").html("<p>" + i + "</p>")
+					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
+					}else $("#pts").html("<p>No colision</p>")
+
+				}
+		}
+
+		function createParticle(PparticleT, PparticleG, PparticleA, Ptotal, Pradius){
+			for( var i = 0; i < Ptotal; i++ ) 
+			{
+				var spriteMaterial = new THREE.SpriteMaterial( { map: PparticleT, useScreenCoordinates: false, color: 0xffffff } );
+				
+				var sprite = new THREE.Sprite( spriteMaterial );
+				sprite.scale.set( 32, 32, 1.0 ); // imageWidth, imageHeight
+				sprite.position.set( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
+				// for a cube:
+				// sprite.position.multiplyScalar( radiusRange );
+				// for a solid sphere:
+				// sprite.position.setLength( Pradius * Math.random() );
+				// for a spherical shell:
+				sprite.position.setLength( radiusRange * (Math.random() * 0.1 + 0.9) );
+				
+				// sprite.color.setRGB( Math.random(),  Math.random(),  Math.random() ); 
+				sprite.material.color.setHSL( Math.random(), 0.9, 0.7 ); 
+				
+				// sprite.opacity = 0.80; // translucent particles
+				sprite.material.blending = THREE.AdditiveBlending; // "glowing" particles
+				
+				PparticleG.add(sprite);
+				// add variable qualities to arrays, if they need to be accessed later
+				PparticleA.startPosition.push( sprite.position.clone() );
+				PparticleA.randomness.push( Math.random() );
+			}
+			PparticleG.position.y = 50;
+				// particleGroup.position.x = 50;
+			scene.add(PparticleG);
+		}
+
+		function createParticle2(){
+			particleTexture = THREE.ImageUtils.loadTexture( 'assets/spark.png' );
+
+			particleGroup = new THREE.Object3D();
+			particleAttributes = { startSize: [], startPosition: [], randomness: [] };
+	
+			var totalParticles = 7;
+			var radiusRange = 7;
+			for( var i = 0; i < totalParticles; i++ ) 
+			{
+				var spriteMaterial = new THREE.SpriteMaterial( { map: particleTexture, useScreenCoordinates: false, color: 0xffffff } );
+				
+				var sprite = new THREE.Sprite( spriteMaterial );
+				sprite.scale.set( 5, 5, 1.0 ); // imageWidth, imageHeight
+				sprite.position.set( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
+				// for a cube:
+				// sprite.position.multiplyScalar( radiusRange );
+				// for a solid sphere:
+				sprite.position.setLength( radiusRange * Math.random() );
+				// for a spherical shell:
+				// sprite.position.setLength( radiusRange * (Math.random() * 0.1 + 0.9) );
+				
+				// sprite.color.setRGB( Math.random(),  Math.random(),  Math.random() ); 
+				sprite.material.color.setHSL( Math.random(), 0.9, 0.7 ); 
+				
+				// sprite.opacity = 0.80; // translucent particles
+				sprite.material.blending = THREE.AdditiveBlending; // "glowing" particles
+				
+				particleGroup.add( sprite );
+				// add variable qualities to arrays, if they need to be accessed later
+				particleAttributes.startPosition.push( sprite.position.clone() );
+				particleAttributes.randomness.push( Math.random() );
+			}
+				particleGroup.position.y = 8;
+				particleGroup.position.x = 30;
+				particleGroup.position.z = 45;
+				scene.add( particleGroup );
+				
+	}
+
+
+		function Mov_Y(Model, valor){
+		
+			if(valor > 10){
+				Model.position.y -= valor; 
+				valor--;	
+			}else{
+				Model.position.y += valor;
+				valor++;	
+			}
+			
+		}
+
+		
+	</script>
+
+</head>
+
+<body>
+
+	<div id="scene-section" class= "Prueba" ></div>
+
+	<div id="Colision"></div>
+
+
+	<div class="container">
+    	<div class="filadatos row justify-content-center">
+    	</div>
+    	<h4 id="timming"></h4>
+        <img id="time" src="../sources/time.png" class="img-fluid">
+        <h4 id="pts">1200</h4>
+        <img id="score" src="../sources/score.png" class="img-fluid">
+        <img id="titulito" src="../sources/aquawaka.png" class="img-fluid">
+        <!-- <h4 id="hitsPts">12</h4> -->
+        <!-- <img id="hits" src="../sources/hits.png" class="img-fluid"> -->
+
+        <input type="image" id="btnPausa" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="PausaGame()">
+        <input type="image" id="btnVictory" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        <input type="image" id="btnLose" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+
+        <div id="Prueba" >
+            <!-- <object data="Models.html"></object> -->
+            <!-- <object data="Models.html" type="text/html" width="900" height="500"></object> -->
+            <!-- <script type="text/javascript" src="index.js"></script> -->
+        </div>
+    </div>
+
+
+<!-- Modal Pausa-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+      <div class="modal-body">
+        <img id="sigpausa" class="img-fluid" src="../sources/pausa.png">
+        <a >
+			<input type="image" class="img-fluid" id="btnPBack" src="../sources/back.png" alt="back" onclick="salir()" >
+		</a>
+        <input type="image" class="img-fluid" id="btnPPlay" src="../sources/play.png" alt="play" data-bs-dismiss="modal" onclick="PlayGame()">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Victory-->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+            <div class="modal-body">
+                <div class="row">
+                    <div>
+                        <form id="formusername" class="mb-2">
+                            <div class="form-group mb-2">
+                            	<p id="scoreVictory">3400</p>
+                                <label id="userinp" for="usernameinput">SHARE YOUR SCORE</label>
+                                <input type="text" class="form-control" id="usernameinput" placeholder="Enter an Username">
+                                <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal" onclick="writeData()">
+                                <button id="btnFB" type="button" class="btn btn-primary" onclick="shareFB()">Compartir en Facebook</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <img id="titlevictory" src="../sources/victory.png" class="img-fluid">
+                        <img id="sigVictory" class="img-fluid" src="../sources/victorysignal.png">
+                        <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnVBack" src="../sources/back.png" alt="next"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Lose-->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+            <div class="modal-body">
+                <img id="titlelose" src="../sources/lose.png" class="img-fluid">
+                <p id="scoreLose">1300</p>
+                <p id="hitsLose">13</p>
+                <img id="sigLose" class="img-fluid" src="../sources/losesignal.png">
+                <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnLBack" src="../sources/back.png" alt="back"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<!--Para Bootsrap-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+
+</body>
+</html>

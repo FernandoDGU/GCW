@@ -30,11 +30,11 @@
             music.loop=true;
             music.load();
             music.play();
-            alert("hola");
+            // alert("hola");
             music.volume=1;
-            music.onplaying = function() {
-                alert("The video is now playing");
-            };
+            // music.onplaying = function() {
+            //     // alert("The video is now playing");
+            // };
         };
         
     </script>
@@ -54,12 +54,12 @@
         </div>
         <div class="row">
             <div class="col">
-                <a href="PlayScreen.html"><input type="image" id="btnPlayGame" name="btnPG" src="../sources/btnplay.png" alt="Play" ></a>
+                <a href="OnePlayer.html"><input type="image" id="btnPlayGame" name="btnPG" src="../sources/btnplay.png" alt="Play" ></a>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <a href="MultiPlayScreen.html"><input type="image" id="btnMultip" name="btnMP" src="../sources/btnMultiplayer.png" alt="Players" onmouseover="document.getElementById('bubble').play()"></a>
+                <a href="MultiPlayer.html"><input type="image" id="btnMultip" name="btnMP" src="../sources/btnMultiplayer.png" alt="Players" onmouseover="document.getElementById('bubble').play()"></a>
                 <input type="image" id="btnControls" name="btnC" src="../sources/btncontrols.png" alt="Controls" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" onmouseover="document.getElementById('bubble').play()">
             </div>
         </div>

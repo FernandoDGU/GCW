@@ -1,8 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Modelos</title>
+	<title>Multiplayer</title>
 	<script type="text/javascript" src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+	<link rel="icon" href="../sources/aquawakaICON.png">
+    <link rel="stylesheet" type="text/css" href="../css/gamescreen.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script type="text/javascript" src="js/mifacebook.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase.js"></script>
+    <!-- JS -->
+    <script  script type="text/javascript" src="js/libs/jquery/Timmer.js"></script>
+	<script  script type="text/javascript" src="js/libs/jquery/Firebase.js"></script>
+
 
 	<script type="text/javascript" src="js/libs/three/three2.js"></script>
 	<!-- <script type="text/javascript" src="js/libs/three/three.js"></script> -->
@@ -10,9 +20,32 @@
 	<script type="text/javascript" src="js/libs/three/OBJLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/FBXLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/inflate.min.js"></script>
-	<script type="module" src="js/libs/three/Math/Box3.js"></script>
 
+	<script type="text/javascript">
 
+        $("#btnUp").click(function(){
+            shareFB();
+        });
+
+        function shareFB() {
+            // alert("exito");
+		    var score = $("#scoreVictory").text();
+            var name = $("#usernameinput").val();
+            debugger;
+		    shareScore(name,score);
+	    }             
+		$("btnPBack").click(function(){
+            salir();
+        });
+
+        function salir(){
+             if (confirm("Quiere salir del juego?")) {
+                location.href ="Beginplay.html";
+            } else {
+
+            }
+        }      
+    </script>
 
 	<script type="text/javascript">
 		
@@ -20,27 +53,23 @@
 		var controls, clock, deltaTime;
 		var objects = [];
 		var keys = {};
-		var cube, cube2, cubeSmash, cube3;
+		var objectMov; 
+		var cube, cube2, cubeSmash1, cubeSmash2;
 		var isWorldReady = [false, false];
 		var texturewater;
 		var objs = [];
 		var cubesCol = [];
+		var mov = [];
 		var i;
 		var movpos;
-		
 		//Colisiones var
 		var collidableMeshList = [];
 
-		//Particles var
-		var particleTexture, particleGroup, particleAttributes;
-		// var totalParticles = 200;
-		// var radiusRange = 50;
 
 		$(document).ready(function(){
-			
+
 			setupScene();
-			
-			//Back Island
+
 			loadOBJWithMTL("assets/Island/", "Island.obj", "Island.mtl", (object) => {
 
 				object.position.z = -40;
@@ -152,7 +181,17 @@
 
 				cube.add(object);
 
+			});
+
+            loadOBJWithMTL("assets/", "KO_Hammer_Brawl2.obj", "KO_Hammer_Brawl2.mtl", (object) => {
 				
+				object.scale.x = 0.4;
+				object.scale.y = 0.4;
+				object.scale.z = 0.4;
+
+				cube2.add(object);
+				
+
 			});
 
 			//Water
@@ -166,16 +205,15 @@
 			floor.position.y = -0.12;
 			floor.rotation.x = Math.PI /2;
 			scene.add(floor);
-
 			
 			render();
 			document.addEventListener('keydown', onKeyDown);
 			document.addEventListener('keyup', onKeyUp);	
 
-			//------------Skydome--------------		
+			//------------Skydome--------------
 			createSkydome();
-
-			//========================CARGA DE FBX
+			
+    		//========================CARGA DE FBX
 
 			//Piranha
 			var loader = new THREE.FBXLoader();
@@ -183,30 +221,21 @@
 				var mixer = new THREE.AnimationMixer(model);
 
 				//Scale
-				// model.scale.x = 1.20;
-				// model.scale.y = 1.20;
-				// model.scale.z = 1.20;
-
-				model.scale.x = 0.20;
-				model.scale.y = 0.20;
-				model.scale.z = 0.20;
+				model.scale.x = 1.20;
+				model.scale.y = 1.20;
+				model.scale.z = 1.20;
 
 				//Position
-				// model.position.z = 28; //frente(+) + atras(-)
-				// model.position.x = 25; //izq(-) + der(+)
-				model.position.y = 0.5; //-1
+				model.position.z = 28; //frente(+) + atras(-)
+				model.position.x = 25; //izq(-) + der(+)
+				model.position.y = -1;
 
 				//Rotation
 				model.rotation.x = THREE.Math.degToRad(-25);
 
 				var action = mixer.clipAction(model.animations[0]);
-				
-				//scene.add(model);
-				//cube3.add(model);
-				// cubesCol.add(model);
-				// Colision
-				//sObj = new THREE.Box3().setFromObject(model);
 
+				// scene.add(model);
 				action.play();
 				action.setLoop(THREE.Loop);
 				action.timeScale = 500;
@@ -214,11 +243,7 @@
 				model.name = "Pirana";
 			});
 
-
-			
-			//If para cargar niveles
-			//[Nivel 1]
-
+			//[NIVEL 1]
 			//FRENTE
 			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 38, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
@@ -234,6 +259,61 @@
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 10, 'Pulpo6', loader, 4.20, 4.20,4.20,-25, 0);
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 10, 'Pulpo7', loader, 4.20, 4.20,4.20,-25, 0);
 
+			//Pez Globo
+			loader.load('assets/FBX/AnimacionesGlobo.fbx', model => {
+				var mixer = new THREE.AnimationMixer(model);
+
+				//Scale
+				model.scale.x = 1.10;
+				model.scale.y = 1.10;
+				model.scale.z = 1.10;
+
+				//Position
+				model.position.z = 15; //frente(+) + atras(-)
+				model.position.x = 12; //izq(-) + der(+)
+				model.position.y = 0.5;
+
+				//Rotation
+				model.rotation.y = THREE.Math.degToRad(-90);
+				model.rotation.x = THREE.Math.degToRad(-25);
+
+				var action = mixer.clipAction(model.animations[0]);
+
+				// scene.add(model);
+				action.play();
+				action.setLoop(THREE.Loop);
+				action.timeScale = 500;
+				objs.push({model, mixer});
+				model.name = "Globo";
+			});
+
+			//Pulpo
+			loader.load('assets/FBX/AnimacionesPulpoHelp.fbx', model => {
+				var mixer = new THREE.AnimationMixer(model);
+
+				//Scale
+				model.scale.x = 4.20;
+				model.scale.y = 4.20;
+				model.scale.z = 4.20;
+
+				//Position
+				model.position.z = 15; //frente(+) + atras(-)
+				model.position.x = -10;//izq(-) + der(+)
+				model.position.y = 2;
+
+				//Rotation
+				model.rotation.x = THREE.Math.degToRad(-25);
+
+				var action = mixer.clipAction(model.animations[0]);
+
+				// scene.add(model);
+				action.play();
+				action.setLoop(THREE.Loop);
+				action.timeScale = 500;
+				objs.push({model, mixer});
+				model.name = "Pulpo";
+			});
+
 			//Tiburon
 			loader.load('assets/FBX/AnimacionesTiburon.fbx', model => {
 				var mixer = new THREE.AnimationMixer(model);
@@ -245,8 +325,7 @@
 
 				//Position
 				model.position.z = 25; //frente(+) + atras(-)
-				model.position.x = -25; //izq(-) + der(+)
-				model.position.y = -1.50;
+				model.position.x = -30; //izq(-) + der(+)
 
 				//Rotation
 				model.rotation.y = THREE.Math.degToRad(-45);
@@ -254,7 +333,7 @@
 
 				var action = mixer.clipAction(model.animations[0]);
 
-				//scene.add(model);
+				// scene.add(model);
 				action.play();
 				action.setLoop(THREE.Loop);
 				action.timeScale = 500;
@@ -281,14 +360,14 @@
 
 				var action = mixer.clipAction(model.animations[0]);
 
-				//scene.add(model);
+				// scene.add(model);
 				action.play();
 				action.setLoop(THREE.Loop);
 				action.timeScale = 500;
 				objs.push({model, mixer});
 				model.name = "Lightfish";
 			});
-			
+
 		});
 
 		function ModelsFbx(nombreArchivo, positionx, positiony, positionz,
@@ -344,13 +423,12 @@
 		}
 
 		function render(){
-
 			requestAnimationFrame(render);
 			deltaTime = clock.getDelta();	
 
-			yaw = 0;
-			forward = 0;
-			movpos = 0;
+			var yaw = 0, yaw2 = 0;
+			var forward = 0, forward2 = 0;
+
 			if (keys["A"]) {
 				yaw = -20;
 			} else if (keys["D"]) {
@@ -361,43 +439,69 @@
 			} else if (keys["S"]) {
 				forward = 20;
 			}
-			
+
 			if(keys["X"]){
 				cube.rotation.x = THREE.Math.degToRad(-90);
-				//Colision
-				Colisiona(cubeSmash);
+				Colisiona(cubeSmash1);
 				yaw = 0;
 				forward = 0;
-				
 			}else {
 				
 				cube.rotation.x = THREE.Math.degToRad(0);
 			}
 
-			if(keys["Y"]){
-				movpos = 20;
-			}else if (keys["H"]){
-				movpos = -20;
+            //Segundo martillo
+
+            
+			if (keys["J"]) {
+				yaw2 = -20;
+			} else if (keys["L"]) {
+				yaw2 = 20;
 			}
+			if (keys["I"]) {
+				forward2 = -20;
+			} else if (keys["K"]) {
+				forward2 = 20;
+			}
+
+			if(keys["N"]){
+				cube2.rotation.x = THREE.Math.degToRad(-90);
+				Colisiona2(cubeSmash2);
+				yaw2 = 0;
+				forward2 = 0;
+			}else {
+				
+				cube2.rotation.x = THREE.Math.degToRad(0);
+			}
+
+
 			if (isWorldReady[0]) {
 				
 				// camera.rotation.y += yaw * deltaTime;
 				// camera.translateZ(forward * deltaTime);
-				cube.translateZ( forward * deltaTime);
-				cube.translateX(yaw * deltaTime);
-				cubeSmash.translateZ( forward * deltaTime);
-				cubeSmash.translateX(yaw * deltaTime);
-				objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
-				
 
-				cube3.translateY (movpos * deltaTime)
-				// Mov_Y(cube, mov[0]);
+				//------MAZO 1---------
+                cube.translateZ( forward * deltaTime);
+			    cube.translateX(yaw * deltaTime);
+				cubeSmash1.translateZ( forward * deltaTime);
+				cubeSmash1.translateX(yaw * deltaTime);
+
+				//------MAZO 2----------
+                cube2.translateZ( forward2 * deltaTime);
+			    cube2.translateX(yaw2 * deltaTime);
+				cubeSmash2.translateZ( forward2 * deltaTime);
+				cubeSmash2.translateX(yaw2 * deltaTime);
+
+
+
+			    objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
+				// Mov_Y(objs[1], mov);
 
 			}
 			
-
-			texturewater.offset.x +=.0003;
 			// cube.rotation.y += yaw * deltaTime; 
+			
+			texturewater.offset.x +=.0003;
 			renderer.render(scene, camera);
 			// camera.lookAt(objectMov.position);
 
@@ -427,8 +531,6 @@
 			grid.position.y = -1;
 			//scene.add(grid);
 
-
-			//-------CUBOS---------------
 			var material = new THREE.MeshPhongMaterial({
 				color: new THREE.Color(0.1, 1.0, 0.0),
 				opacity: .0,
@@ -441,53 +543,51 @@
 				transparent: true,
 			});
 
-			var material3 = new THREE.MeshPhongMaterial({
-				color: new THREE.Color(0.1, 1.0, 1.0),
-				opacity: .7,
-				transparent: true,
-			});
-
-
-			//-----CUBO MAZO------------
 			var geometry = new THREE.BoxGeometry(1, 1, 1);
-			cube = new THREE.Mesh(geometry, material);
+			//----------MAZO 1 ----------------
+			cube = new THREE.Mesh(geometry, material)
 			cube.position.y = 2;
-			cube.position.x = 0;
+            cube.position.x = -20;
 			cube.position.z = 20;
 			scene.add(cube);
-			
-			//----Cubo golpe---------
-			cubeSmash = new THREE.Mesh(geometry, material);
-			cubeSmash.scale.x = 5;
-			cubeSmash.scale.y = 5;
-			cubeSmash.scale.z = 5;
 
-			cubeSmash.position.y = 8.90;
-			cubeSmash.position.z = 10;
-			scene.add(cubeSmash);
+			//--- Cubo golpe Mazo 1-----
+			cubeSmash1 = new THREE.Mesh(geometry, material);
+			cubeSmash1.scale.x = 5;
+			cubeSmash1.scale.y = 5;
+			cubeSmash1.scale.z = 5;
+
+			cubeSmash1.position.y = 8.90;
+			cubeSmash1.position.z = 10;
+			cubeSmash1.position.x = -20;
+			scene.add(cubeSmash1);
+
+			//----------MAZO 2 ----------------
+            cube2 = new THREE.Mesh(geometry, material);
+			cube2.position.y = 2;
+        
+			cube2.position.x = 20;
+			cube2.position.z = 20;
+
+			//--- Cubo golpe Mazo 2-----
+			cubeSmash2 = new THREE.Mesh(geometry, material);
+			cubeSmash2.scale.x = 5;
+			cubeSmash2.scale.y = 5;
+			cubeSmash2.scale.z = 5;
+
+			cubeSmash2.position.y = 8.90;
+			cubeSmash2.position.z = 10;
+			cubeSmash2.position.x = 20;
+			scene.add(cubeSmash2);
 
 
-			//------------------------------------------
-			//Cubos para mover
-			cube3 = new THREE.Mesh(geometry, material3);
-			cube3.position.y = -3;
-			cube3.position.x = 25;
-			cube3.position.z = 25;
-			cube3.scale.x = 5;
-			cube3.scale.y = 5;
-			cube3.scale.z = 5;
-			cube3.name = "cube03";
-			scene.add(cube3);
-
-			// scene.add(cube3);
+            scene.add(cube2);
 
 
 			//---CUBOS COLISION-----------
-
 			camera.position.y = 30;
 			camera.position.z = 60;
 
-			//Acomodar posiciones de cubos en modelos
 			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha"); //Piranha 25, 3, 28
 			createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo"); //Globo
 			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo"); // Pulpo
@@ -495,13 +595,9 @@
 			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish"); //Pez raro
 
 
-
-			// camera.rotation.y = THREE.Math.degToRad(-45);	
-			//------------Creacion de particula-----------------
-			createParticle2();
+			// camera.rotation.y = THREE.Math.degToRad(-45);
 			camera.rotation.x = THREE.Math.degToRad(-38);  //cambio a 38
 			$("#scene-section").append(renderer.domElement);
-			
 		}
 
 		function createSkydome(){
@@ -530,15 +626,16 @@
 			Pname.scale.y = P_sz;
 
 			
-			if(name == "Piranha"){ 
-				cube3.add(Pname);
-			}
-			else{
+			// if(name == "Piranha"){ 
+				// cube3.add(Pname);
+			// }
+			// else{
 				scene.add(Pname);
-			}
+			// }
 			Pname.name = name;
 			collidableMeshList.push(Pname);
 		}
+
 
 		function Colisiona(CuboMazo){
 				var originPoint = CuboMazo.position.clone();
@@ -549,8 +646,7 @@
 
 					var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
 					var collisionResults = ray.intersectObjects(collidableMeshList);
-					
-					// && collisionResults[0].object.name == "cubo5"
+
 					if(collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ){
 
 						switch(collisionResults[0].object.name){
@@ -579,87 +675,31 @@
 								break;
 						}
 						
-					$("#Colision").html("<p>Puntaje: " + i + "</p>")
+					$("#pts").html("<p>" + i + "</p>")
 					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
-					}else $("#Colision").html("<p>No colision</p>")
+					}else $("#pts").html("<p>No colision</p>")
+				}
+		}
+
+		function Colisiona2(CuboMazo2){
+				var originPoint = CuboMazo2.position.clone();
+				for(var vertexIndex = 0; vertexIndex < CuboMazo2.geometry.vertices.length; vertexIndex++){
+					var localVextex = CuboMazo2.geometry.vertices[vertexIndex].clone();
+					var globalVertex = localVextex.applyMatrix4(CuboMazo2.matrix);
+					var directionVector = globalVertex.sub(CuboMazo2.position);
+
+					var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+					var collisionResults = ray.intersectObjects(collidableMeshList);
+
+					if(collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()){
+					$("#Colision").append("<p>colision 2</p>")
+					}else $("#Colision").append("<p></p>")
 
 				}
 		}
 
-		function createParticle(PparticleT, PparticleG, PparticleA, Ptotal, Pradius){
-			for( var i = 0; i < Ptotal; i++ ) 
-			{
-				var spriteMaterial = new THREE.SpriteMaterial( { map: PparticleT, useScreenCoordinates: false, color: 0xffffff } );
-				
-				var sprite = new THREE.Sprite( spriteMaterial );
-				sprite.scale.set( 32, 32, 1.0 ); // imageWidth, imageHeight
-				sprite.position.set( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
-				// for a cube:
-				// sprite.position.multiplyScalar( radiusRange );
-				// for a solid sphere:
-				// sprite.position.setLength( Pradius * Math.random() );
-				// for a spherical shell:
-				sprite.position.setLength( radiusRange * (Math.random() * 0.1 + 0.9) );
-				
-				// sprite.color.setRGB( Math.random(),  Math.random(),  Math.random() ); 
-				sprite.material.color.setHSL( Math.random(), 0.9, 0.7 ); 
-				
-				// sprite.opacity = 0.80; // translucent particles
-				sprite.material.blending = THREE.AdditiveBlending; // "glowing" particles
-				
-				PparticleG.add(sprite);
-				// add variable qualities to arrays, if they need to be accessed later
-				PparticleA.startPosition.push( sprite.position.clone() );
-				PparticleA.randomness.push( Math.random() );
-			}
-			PparticleG.position.y = 50;
-				// particleGroup.position.x = 50;
-			scene.add(PparticleG);
-		}
-
-		function createParticle2(){
-			particleTexture = THREE.ImageUtils.loadTexture( 'assets/spark.png' );
-
-			particleGroup = new THREE.Object3D();
-			particleAttributes = { startSize: [], startPosition: [], randomness: [] };
-	
-			var totalParticles = 7;
-			var radiusRange = 7;
-			for( var i = 0; i < totalParticles; i++ ) 
-			{
-				var spriteMaterial = new THREE.SpriteMaterial( { map: particleTexture, useScreenCoordinates: false, color: 0xffffff } );
-				
-				var sprite = new THREE.Sprite( spriteMaterial );
-				sprite.scale.set( 5, 5, 1.0 ); // imageWidth, imageHeight
-				sprite.position.set( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
-				// for a cube:
-				// sprite.position.multiplyScalar( radiusRange );
-				// for a solid sphere:
-				sprite.position.setLength( radiusRange * Math.random() );
-				// for a spherical shell:
-				// sprite.position.setLength( radiusRange * (Math.random() * 0.1 + 0.9) );
-				
-				// sprite.color.setRGB( Math.random(),  Math.random(),  Math.random() ); 
-				sprite.material.color.setHSL( Math.random(), 0.9, 0.7 ); 
-				
-				// sprite.opacity = 0.80; // translucent particles
-				sprite.material.blending = THREE.AdditiveBlending; // "glowing" particles
-				
-				particleGroup.add( sprite );
-				// add variable qualities to arrays, if they need to be accessed later
-				particleAttributes.startPosition.push( sprite.position.clone() );
-				particleAttributes.randomness.push( Math.random() );
-			}
-				particleGroup.position.y = 8;
-				particleGroup.position.x = 30;
-				particleGroup.position.z = 45;
-				scene.add( particleGroup );
-				
-	}
-
-
 		function Mov_Y(Model, valor){
-		
+
 			if(valor > 10){
 				Model.position.y -= valor; 
 				valor--;	
@@ -669,8 +709,6 @@
 			}
 			
 		}
-
-		
 	</script>
 
 </head>
@@ -679,9 +717,90 @@
 
 <body>
 
-	<div id="scene-section"></div>
-
+	<div id="scene-section" class= "Prueba" ></div>
 	<div id="Colision"></div>
 
+	<div class="container">
+    	<div class="filadatos row justify-content-center">
+    	</div>
+    	<h4 id="timming">00:35</h4>
+        <img id="time" src="../sources/time.png" class="img-fluid">
+        <h4 id="pts">1200</h4>
+        <img id="score" src="../sources/score.png" class="img-fluid">
+        <img id="titulito" src="../sources/aquawaka.png" class="img-fluid">
+
+        <input type="image" id="btnPausa" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <input type="image" id="btnVictory" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        <input type="image" id="btnLose" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+
+        <div id="Prueba" >
+            <!-- <object data="Models.html"></object> -->
+            <!-- <object data="ModelsMulti.html" type="text/html" width="900" height="500"></object> -->
+            <!-- <script type="text/javascript" src="index.js"></script> -->
+        </div>
+    </div>
+
+
+<!-- Modal Pausa-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+      <div class="modal-body">
+        <img id="sigpausa" class="img-fluid" src="../sources/pausa.png">
+        <a >
+			<input type="image" class="img-fluid" id="btnPBack" src="../sources/back.png" alt="back" onclick="salir()">
+		</a>
+        <input type="image" class="img-fluid" id="btnPPlay" src="../sources/play.png" alt="play" data-bs-dismiss="modal">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Victory-->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+            <div class="modal-body">
+                <div class="row">
+                    <div>
+                        <form id="formusername" class="mb-2">
+                            <div class="form-group mb-2">
+                            	<p id="scoreVictory">3400</p>
+                                <label id="userinp" for="usernameinput">SHARE YOUR SCORE</label>
+                                <input type="text" class="form-control" id="usernameinput" placeholder="Enter an Username">
+                                <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal" onclick="writeData()">
+                                <button id="btnFB" type="button" class="btn btn-primary" onclick="shareFB()">Compartir en Facebook</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <img id="titlevictory" src="../sources/victory.png" class="img-fluid">
+                        <img id="sigVictory" class="img-fluid" src="../sources/victorysignal.png">
+                        <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnVBack" src="../sources/back.png" alt="next"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Lose-->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+            <div class="modal-body">
+                <img id="titlelose" src="../sources/lose.png" class="img-fluid">
+                <p id="scoreLose">1300</p>
+                <p id="hitsLose">13</p>
+                <img id="sigLose" class="img-fluid" src="../sources/losesignal.png">
+                <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnLBack" src="../sources/back.png" alt="back"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
+<!--Para Bootsrap-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
 </html>
