@@ -13,6 +13,8 @@
     <script type="text/javascript">
     $(document).ready(function() {
 
+        localStorage.setItem('musica', 'verdadero');
+
         getData();
 
         var sound = $("#bubble")[0];
@@ -56,6 +58,27 @@
                 col2.innerHTML = childData['score'];
             });
         });
+    }
+
+    //Musica arreglada
+    function stop2(){
+        var musicastop = localStorage.getItem('musica');
+
+        if (musicastop == 'verdadero')
+        {
+            document.getElementById("musicBegin").pause();
+            localStorage.setItem('musica', 'falso');
+        }
+    }
+
+    function play2(){
+        var musicastop = localStorage.getItem('musica');
+
+        if (musicastop == 'falso')
+        {
+            document.getElementById("musicBegin").play();
+            localStorage.setItem('musica', 'verdadero');
+        }
     }
 
     </script>
@@ -107,10 +130,10 @@
                 </div>-->
                     <div class="filabotones2 row justify-content-center">
                         <div class="col ">
-                            <input type="image" class="img-fluid" id="btnAccept2" name="btnAS2" src="../sources/accept.png" alt="ok" onclick="document.getElementById('musicBegin').play()">
+                            <input type="image" class="img-fluid" id="btnAccept2" name="btnAS2" src="../sources/accept.png" alt="ok" onclick="play2()">
                         </div>
                         <div class="col ">
-                            <input type="image" class="img-fluid" id="btnCancel2" name="btnCS2" src="../sources/cancel.png" alt="ok" onclick="document.getElementById('musicBegin').pause()">
+                            <input type="image" class="img-fluid" id="btnCancel2" name="btnCS2" src="../sources/cancel.png" alt="ok" onclick="stop2()">
                         </div>
                     </div>
                 </div>

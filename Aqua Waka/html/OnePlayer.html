@@ -79,7 +79,20 @@
 		// var radiusRange = 50;
 		localStorage.setItem('Usuario', i);
 		$(document).ready(function(){
-			
+		
+		//Musica arreglada
+        var musicastop = localStorage.getItem('musica');
+
+        if (musicastop == 'verdadero')
+        {
+            document.getElementById("musicBegin").play();
+        }
+
+        if (musicastop == 'falso')
+        {
+            document.getElementById("musicBegin").pause();
+        }
+
 			setupScene();
 			
 			//Back Island
@@ -260,7 +273,7 @@
 			//[Nivel 1]
 
 
-			if(cambioNiveles == 0){
+			if(cambioNiveles == 2){
 			//FRENTE
 			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 38, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
@@ -773,6 +786,8 @@
 </head>
 
 <body>
+
+	<audio src="../sounds/AWmusic.mp3" preload="auto" autoplay id="musicBegin"></audio>
 
 	<div id="scene-section" class= "Prueba" ></div>
 
