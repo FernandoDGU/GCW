@@ -65,8 +65,10 @@
 		var texturewater;
 		var objs = [];
 		var cubesCol = [];
-		var i;
-		var movpos;
+		var i = 0;
+		var movpos = 0, moval = 0.001;
+		var cambioNiveles = 0;
+		var contador = false;
 		
 		//Colisiones var
 		var collidableMeshList = [];
@@ -242,7 +244,7 @@
 				var action = mixer.clipAction(model.animations[0]);
 				
 				//scene.add(model);
-				//cube3.add(model);
+				cube3.add(model);
 				// cubesCol.add(model);
 				// Colision
 				//sObj = new THREE.Box3().setFromObject(model);
@@ -257,21 +259,24 @@
 			//If para cargar niveles
 			//[Nivel 1]
 
+
+			if(cambioNiveles == 1){
 			//FRENTE
 			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 38, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 40, 'Pulpo2', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
 
 			//Medio
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -25, 2, 25, 'Pulpo3', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 2, 25, 'Pulpo4', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 25, 2, 25, 'Pulpo5', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -25, 2, 25, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 2, 25, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 25, 2, 25, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
 			
 			//ATRAS
-			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 10, 'Globo2', loader, 1.10, 1.10,1.10,-25, -90);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 10, 'Pulpo6', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 10, 'Pulpo7', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 10, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 10, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 10, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
 
+			}
 			//Tiburon
 			loader.load('assets/FBX/AnimacionesTiburon.fbx', model => {
 				var mixer = new THREE.AnimationMixer(model);
@@ -388,7 +393,7 @@
 
 			yaw = 0;
 			forward = 0;
-			movpos = 0;
+			// movpos = 0;
 			if (keys["A"]) {
 				yaw = -20;
 			} else if (keys["D"]) {
@@ -413,10 +418,43 @@
 			}
 
 			if(keys["Y"]){
-				movpos = 20;
+				//movpos = 20;
+				cambioNiveles = 1;
 			}else if (keys["H"]){
-				movpos = -20;
+				//movpos = -20;
+				cambioNiveles = 2;
 			}
+
+			//Primer nivel 
+			if(cambioNiveles == 0){
+				// movpos += moval;
+				// if(movpos >= 1){
+				// 	moval -= 0.001;
+					
+				// }
+				// if(movpos <= -1){
+				// 	moval += 0.001;
+				// }
+				if(contador == false){
+					if(cube3.position.y < -1)
+					cube3.position.y += 0.1;
+					else
+					contador = true;
+				}
+
+				if(contador==true){
+					cube3.position.y -= 0.1;
+					if(cube3.position.y <= -11)
+						contador = false;
+				}
+			
+
+				
+			}else{
+				
+			}
+			
+
 			if (isWorldReady[0]) {
 				
 				// camera.rotation.y += yaw * deltaTime;
@@ -432,6 +470,7 @@
 				// Mov_Y(cube, mov[0]);
 
 			}
+
 			
 
 			texturewater.offset.x +=.0003;
@@ -526,11 +565,21 @@
 			camera.position.z = 60;
 
 			//Acomodar posiciones de cubos en modelos
-			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha"); //Piranha 25, 3, 28
-			createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo"); //Globo
-			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo"); // Pulpo
-			createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon"); // TIBURON
-			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish"); //Pez raro
+
+			//Acomodar cubos para Escenario 1
+			if(cambioNiveles == 0){
+			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha", cube3); //Piranha 25, 3, 28
+			createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo", 0); //Globo
+			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo", 0); // Pulpo
+			createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon", 0); // TIBURON
+			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish", 0); //Pez raro
+			}
+
+
+			//Escenario 2
+
+
+			//Escenario 3
 
 
 
@@ -557,7 +606,7 @@
     		scene.add(sky);
 		}
 
-		function createCubes(Pgeometry, Pmaterial, Pname, Px, Py,Pz, P_sx, P_sy, P_sz, name){
+		function createCubes(Pgeometry, Pmaterial, Pname, Px, Py,Pz, P_sx, P_sy, P_sz, name, cubevar){
 			Pname = new THREE.Mesh(Pgeometry, Pmaterial);
 			Pname.position.x = Px;
 			Pname.position.y = Py;
@@ -570,7 +619,7 @@
 
 			
 			if(name == "Piranha"){ 
-				cube3.add(Pname);
+				cubevar.add(Pname);
 			}
 			else{
 				scene.add(Pname);
@@ -578,6 +627,11 @@
 			Pname.name = name;
 			collidableMeshList.push(Pname);
 		}
+
+		function createCubesMov (){
+
+		}
+
 
 		function Colisiona(CuboMazo){
 				var originPoint = CuboMazo.position.clone();
@@ -594,27 +648,28 @@
 
 						switch(collisionResults[0].object.name){
 							case "Piranha": 
-								i = "Piranha";
+								// i = "Piranha";
+								i = (i + 1);
 								break;	
 							
 							case "LightFish": 
 								// i = i +1;
-								i = "LightFish"
+								// i = "LightFish"
 								break;
 
 							case "Globo": 
 								// i = i +1;
-								i = "Globo"
+								// i = "Globo"
 								break;
 
 							case "Pulpo": 
 								// i = i +1;
-								i = "Pulpo"
+								// i = "Pulpo"
 								break;
 
 							case "Tiburon": 
 								// i = i +1;
-								i = "Tiburon"
+								// i = "Tiburon"
 								break;
 						}
 						
