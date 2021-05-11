@@ -8,44 +8,63 @@
     <link rel="stylesheet" type="text/css" href="../css/bplay.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script type="text/javascript" src="js/libs/jquery/jquery-2.1.4.min.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase.js"></script>
+    <script script type="text/javascript" src="js/libs/jquery/Firebase.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-            var sound = $("#bubble")[0];
-            $("#btnPlayGame")
+    $(document).ready(function() {
+
+        getData();
+
+        var sound = $("#bubble")[0];
+        $("#btnPlayGame")
             .hover(function() {
                 sound.play();
             });
 
-            $("#musicBegin").ready(function() {
-                musicInit("#musicBegin");
-            });
-
+        $("#musicBegin").ready(function() {
+            musicInit("#musicBegin");
         });
 
-        function musicInit(pAudio){
-            var music = $(pAudio)[0];
-            music.defaultMuted =false;
-            music.autoplay=true;
-            music.loop=true;
-            music.load();
-            music.play();
-            // alert("hola");
-            music.volume=1;
-            // music.onplaying = function() {
-            //     // alert("The video is now playing");
-            // };
-        };
-        
-    </script>
+    });
 
+    function musicInit(pAudio) {
+        var music = $(pAudio)[0];
+        music.defaultMuted = false;
+        music.autoplay = true;
+        music.loop = true;
+        music.load();
+        music.play();
+        // alert("hola");
+        music.volume = 1;
+        // music.onplaying = function() {
+        //     // alert("The video is now playing");
+        // };
+    };
+
+    function getData() {
+        firebase.database().ref('User').once('value', function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                //$('.product-list').append("<p>"+childData['name']+"----"+ childData['score']+"</p>");
+                var table = document.getElementById("tablita");
+                var row = table.insertRow(1);
+                var col = row.insertCell(0);
+                var col2 = row.insertCell(1);
+
+                col.innerHTML = childData['name'];
+                col2.innerHTML = childData['score'];
+            });
+        });
+    }
+
+    </script>
 </head>
 
 <body>
     <!--Audios-->
     <audio src="../sounds/AWmusic.mp3" preload="auto" autoplay id="musicBegin"></audio>
     <audio src="../sounds/newbubble.mp3" preload="auto" id="bubble"></audio>
-
     <div class="container">
         <div class="row">
             <div id="coltitle" class="col">
@@ -54,7 +73,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <a href="OnePlayer.html"><input type="image" id="btnPlayGame" name="btnPG" src="../sources/btnplay.png" alt="Play" ></a>
+                <a href="OnePlayer.html"><input type="image" id="btnPlayGame" name="btnPG" src="../sources/btnplay.png" alt="Play"></a>
             </div>
         </div>
         <div class="row">
@@ -65,22 +84,20 @@
         </div>
         <div class="row">
             <div class="col">
-                <input type="image" id="btnLeaders" name="btnL" src="../sources/btnleaders.png" alt="Leaders"
-                data-bs-toggle="modal" data-bs-target="#exampleModalLong" onmouseover="document.getElementById('bubble').play()">
+                <input type="image" id="btnLeaders" name="btnL" src="../sources/btnleaders.png" alt="Leaders" data-bs-toggle="modal" data-bs-target="#exampleModalLong" onmouseover="document.getElementById('bubble').play()">
                 <input type="image" id="btnSettings" name="btnS" src="../sources/btnsettings.png" alt="Settings" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onmouseover="document.getElementById('bubble').play()">
                 <!--Lo Lleva al modal-->
             </div>
         </div>
     </div>
-
-<!-- Modal para Settings-->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
-            <div class="mBody modal-body">
-                <img id="titlesettings" src="../sources/tsettings.png" class="img-fluid">
-                <img id="sigsettings" class="img-fluid" src="../sources/signalsettings3.png">
-                <!--<div class="filabotones row justify-content-center">
+    <!-- Modal para Settings-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+                <div class="mBody modal-body">
+                    <img id="titlesettings" src="../sources/tsettings.png" class="img-fluid">
+                    <img id="sigsettings" class="img-fluid" src="../sources/signalsettings3.png">
+                    <!--<div class="filabotones row justify-content-center">
                     <div class="col ">
                         <input type="image" class="img-fluid" id="btnAccept" name="btnAS" src="../sources/accept.png" alt="ok" onclick="document.getElementById('bubble').play()">
                     </div>
@@ -88,99 +105,67 @@
                         <input type="image" class="img-fluid" id="btnCancel" name="btnCS" src="../sources/cancel.png" alt="ok" onclick="document.getElementById('bubble').pause()">
                     </div>
                 </div>-->
-                <div class="filabotones2 row justify-content-center">
-                    <div class="col ">
-                        <input type="image" class="img-fluid" id="btnAccept2" name="btnAS2" src="../sources/accept.png" alt="ok" onclick="document.getElementById('musicBegin').play()">
-                    </div>
-                    <div class="col ">
-                        <input type="image" class="img-fluid" id="btnCancel2" name="btnCS2" src="../sources/cancel.png" alt="ok" onclick="document.getElementById('musicBegin').pause()">
-                    </div>
-                </div>
-            </div>
-            <input type="image" class="img-fluid" id="btnSback" name="btnbackS" src="../sources/back.png" alt="back" data-bs-dismiss="modal">
-            <input type="image" class="img-fluid" id="btnSok" name="btnokS" src="../sources/ok.png" alt="ok" data-bs-dismiss="modal">
-            
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal para Controls-->
-<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
-            <div class="BodyControl modal-body" style="">
-                <img id="titlecontrols" src="../sources/Tcontrols.png" class="img-fluid">
-                <img id="sigcontrol" class="img-fluid" src="../sources/signalcontrolsNEW.png">
-                <input type="image" class="img-fluid" id="btnCback" name="btnbackC" src="../sources/back.png" alt="back" data-bs-dismiss="modal">
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal para Leaders-->
-<div class="modal fade " id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="mHeadL modal-header" style="background-color: #103A61">
-                <img id="titleLeaders" src="../sources/leaderstitle.png" class="img-fluid">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <span aria-hidden="true">&times;</span>
-            </div>
-            <div class="mBodyL modal-body" style="background-color: #12416d">
-                <div class="container">
-                    <div class="row">
-                    <div class="col-2">
-                        <img id="Trophie" src="../sources/premio.png" class="img-fluid">
-                    </div>
-                    <div class="col-10">
-                        <table class="table table-striped custab text-center">
-                            <thead style="background-color: #f8cf1a; color:black">
-                                <tr class="text-center">
-                                    <th>Places</th>
-                                    <th>User</th>
-                                    <th>Score</th>
-                                </tr>
-                            </thead>
-                            <tr class="text-center" style="background-color: #092239; color: white">
-                                <td>1</td>
-                                <td>Swteban</td>
-                                
-                                <td>1200</td>
-                            </tr>
-                            <tr class="text-center" style="background-color: #092239; color: white">
-                                <td>2</td>
-                                <td>FerDG</td>
-                                
-                                <td>950</td>
-                            </tr>
-
-                            <tr class="text-center" style="background-color: #092239; color: white">
-                                <td>3</td>
-                                <td>KeerVan3</td>
-                                
-                                <td>600</td>
-                            </tr>
-
-                        </table>
-                    </div>
+                    <div class="filabotones2 row justify-content-center">
+                        <div class="col ">
+                            <input type="image" class="img-fluid" id="btnAccept2" name="btnAS2" src="../sources/accept.png" alt="ok" onclick="document.getElementById('musicBegin').play()">
+                        </div>
+                        <div class="col ">
+                            <input type="image" class="img-fluid" id="btnCancel2" name="btnCS2" src="../sources/cancel.png" alt="ok" onclick="document.getElementById('musicBegin').pause()">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="mFootL modal-footer" style="background-color: #103A61">
-                <input type="image" class="img-fluid" id="btnLback" src="../sources/back.png" alt="back" data-bs-dismiss="modal">
+                <input type="image" class="img-fluid" id="btnSback" name="btnbackS" src="../sources/back.png" alt="back" data-bs-dismiss="modal">
+                <input type="image" class="img-fluid" id="btnSok" name="btnokS" src="../sources/ok.png" alt="ok" data-bs-dismiss="modal">
             </div>
         </div>
     </div>
-</div>
-
-
+    <!-- Modal para Controls-->
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
+                <div class="BodyControl modal-body" style="">
+                    <img id="titlecontrols" src="../sources/Tcontrols.png" class="img-fluid">
+                    <img id="sigcontrol" class="img-fluid" src="../sources/signalcontrolsNEW.png">
+                    <input type="image" class="img-fluid" id="btnCback" name="btnbackC" src="../sources/back.png" alt="back" data-bs-dismiss="modal">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Leaders-->
+    <div class="modal fade " id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="mHeadL modal-header" style="background-color: #103A61">
+                    <img id="titleLeaders" src="../sources/leaderstitle.png" class="img-fluid">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="mBodyL modal-body" style="background-color: #12416d">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                <img id="Trophie" src="../sources/premio.png" class="img-fluid">
+                            </div>
+                            <div class="col-10">
+                                <table id="tablita" class="table table-striped custab text-center" style="background-color: #092239; color: white">
+                                    <thead >
+                                        <tr class="text-center">
+                                            <th style="background-color: #f8cf1a; color:black">User</th>
+                                            <th style="background-color: #f8cf1a; color:black">Score</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mFootL modal-footer" style="background-color: #103A61">
+                    <input type="image" class="img-fluid" id="btnLback" src="../sources/back.png" alt="back" data-bs-dismiss="modal">
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-
-
-
-
 <!--Para Bootsrap-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>

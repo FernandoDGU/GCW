@@ -69,10 +69,10 @@
 		var movpos = 0, moval = 0.001;
 		var cambioNiveles = 0;
 		var contador = false;
-		
+		var ptscore = 0;
 		//Colisiones var
 		var collidableMeshList = [];
-
+		var ptsscore;
 		//Particles var
 		var particleTexture, particleGroup, particleAttributes;
 		// var totalParticles = 200;
@@ -260,7 +260,7 @@
 			//[Nivel 1]
 
 
-			if(cambioNiveles == 1){
+			if(cambioNiveles == 0){
 			//FRENTE
 			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 38, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
@@ -673,9 +673,11 @@
 								break;
 						}
 						
-					$("#pts").html("<p>" + i + "</p>")
+					$("#pts").html("<p>" + i + "</p>");
+					//$("#scoreVictory").value = "i";
+					document.getElementById("scoreVictory").value = i;
 					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
-					}else $("#pts").html("<p>No colision</p>")
+					}//else $("#pts").html("<p>No colision</p>")
 
 				}
 		}
@@ -782,7 +784,7 @@
     	</div>
     	<h4 id="timming"></h4>
         <img id="time" src="../sources/time.png" class="img-fluid">
-        <h4 id="pts">1200</h4>
+        <h4 id="pts"></h4>
         <img id="score" src="../sources/score.png" class="img-fluid">
         <img id="titulito" src="../sources/aquawaka.png" class="img-fluid">
         <!-- <h4 id="hitsPts">12</h4> -->
@@ -824,7 +826,8 @@
                     <div>
                         <form id="formusername" class="mb-2">
                             <div class="form-group mb-2">
-                            	<p id="scoreVictory">3400</p>
+                            	<!--<input id="scoreVictory"></input>-->
+                            	<input id="scoreVictory" type="number" value="" readonly>
                                 <label id="userinp" for="usernameinput">SHARE YOUR SCORE</label>
                                 <input type="text" class="form-control" id="usernameinput" placeholder="Enter an Username">
                                 <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal" onclick="writeData()">

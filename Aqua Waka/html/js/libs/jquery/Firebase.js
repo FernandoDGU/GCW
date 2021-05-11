@@ -16,27 +16,28 @@ var firebaseConfig = {
 function writeData(){
     firebase.database().ref("User").push({
         name: document.getElementById("usernameinput").value,
-        // score: puntos
+        score: document.getElementById("scoreVictory").value
     });
     var nombre =document.getElementById("usernameinput").value;
     localStorage.setItem('Usuario', nombre);
     // $('.product-list').append(nombre + "----" + puntos);
 }
 
-//firebase.analytics();
-// function getData(){
-//   firebase.database().ref('User').once('value', function(snapshot){
-//       snapshot.forEach(function(childSnapshot)
-//       {
-//           var childKey = childSnapshot.key;
-//           var childData = childSnapshot.val();
-//           //document.getElementById("data").innerHTML = childData['name']+"----" childData['score'];
-//           $('.product-list').append("<p>"+childData['name']+"----"+ childData['score']+"</p>");
-//       });
-//   });
-// }
-// function escribirForm() {
+//Obtener de la Base
+function getData(){
+   firebase.database().ref('User').once('value', function(snapshot){
+       snapshot.forEach(function(childSnapshot)
+       {
+           var childKey = childSnapshot.key;
+           var childData = childSnapshot.val();
+           //$('.product-list').append("<p>"+childData['name']+"----"+ childData['score']+"</p>");
+           var table = document.getElementById("tablita");
+           var row = table.insertRow(0);
+           var col= row.insertCell(0);
+           var col2= row.insertCell(1);
 
-// var nombree = localStorage.getItem('Usuario');
-// document.getElementById('txtName').innerHTML=nombree;
-// }
+           col.innerHTML = childData['name'];
+           col2.innerHTML = childData['score'];
+       });
+   });
+ }
