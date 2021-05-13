@@ -116,7 +116,9 @@
 		var collidableMeshList = [];
 		var ptsscore;
 		var particleTexture, particleGroup, particleAttributes;
-		
+
+		var perdiste;
+		var puntaje = 0;
 		//Declaracion de contadores
 		for(i = 1; i< 20; i++){
 			contadores[i] = false
@@ -706,9 +708,34 @@
 					contadores[9] = false;
 				}
 
+				perdiste = n-1;
 				
-			}else{
+				if(perdiste > 20){
+
+					if(puntaje > 100){
+						PausaGame();
+						$('#exampleModal2').modal('show');
+					}else{
+						PausaGame();
+						$('#exampleModal3').modal('show');
+					}
+					
+				}
 				
+			} 
+			
+			if(cambioNiveles == 1){
+				
+				// var perdiste = document.getElementById("timming").getElementsByTagName("h4").text();
+				perdiste = n-1;
+				
+				if(perdiste > 20){
+					PausaGame();
+					$('#exampleModal3').modal('show');
+				}
+				
+
+
 			}
 			
 
@@ -836,15 +863,25 @@
 			cubesMov[10] = createCubesMov(geometry, material, cubesMov[10], 20, 2, 10, 5, 5, 5)
 
 			//Acomodar cubos para Escenario 1
-			if(cambioNiveles == 0){
+			// if(cambioNiveles == 0){
 			// createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha", cubesMov[1]); //Piranha 25, 3, 28
 			// createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo", 0); //Globo
 			// createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo", 0); // Pulpo
 			// createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon", 0); // TIBURON
 			// createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish", 0); //Pez raro
-			}
-			//Escenario 2
-			//Escenario 3
+			// }
+			
+			//Colisiones nivel 1
+			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.8, "Globo", cubesMov[2]);
+			createCubes(geometry, material, cubesCol[2], 0,2,0, 1.5, 1.5, 1.8, "Pulpo", cubesMov[3]);
+			createCubes(geometry, material, cubesCol[3], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[4]);
+			createCubes(geometry, material, cubesCol[4], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[5]);
+			createCubes(geometry, material, cubesCol[5], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[6]);
+			createCubes(geometry, material, cubesCol[7], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[7]);
+			createCubes(geometry, material, cubesCol[8], 0,2,0, 1.5, 1.5, 0.8, "Globo", cubesMov[8]);
+			createCubes(geometry, material, cubesCol[9], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[9]);
+			createCubes(geometry, material, cubesCol[10], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[10]);
+
 			// camera.rotation.y = THREE.Math.degToRad(-45);	
 			//------------Creacion de particula-----------------
 			createParticle2(30, 8, 45);
@@ -880,12 +917,13 @@
 			Pname.scale.y = P_sz;
 
 			
-			if(name == "Piranha"){ 
-				cubevar.add(Pname);
-			}
-			else{
-				scene.add(Pname);
-			}
+			// if(name == "Piranha"){ 
+			// 	cubevar.add(Pname);
+			// }
+			// else{
+			// 	scene.add(Pname);
+			// }
+			cubevar.add(Pname);
 			Pname.name = name;
 			collidableMeshList.push(Pname);
 		}
@@ -924,7 +962,7 @@
 						switch(collisionResults[0].object.name){
 							case "Piranha": 
 								// i = "Piranha";
-								i = (i + 1);
+								puntaje = (puntaje + 1);
 								break;	
 							
 							case "LightFish": 
@@ -933,12 +971,12 @@
 								break;
 
 							case "Globo": 
-								// i = i +1;
+								puntaje = (puntaje -1);
 								// i = "Globo"
 								break;
 
 							case "Pulpo": 
-								// i = i +1;
+								puntaje = puntaje +1;
 								// i = "Pulpo"
 								break;
 
@@ -948,9 +986,9 @@
 								break;
 						}
 						
-					$("#pts").html("<p>" + i + "</p>");
+					$("#pts").html("<p>" + puntaje + "</p>");
 					//$("#scoreVictory").value = "i";
-					document.getElementById("scoreVictory").value = i;
+					document.getElementById("scoreVictory").value = puntaje;
 					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
 					}//else $("#pts").html("<p>No colision</p>")
 
@@ -1065,7 +1103,7 @@
     	</div>
     	<h4 id="timming"></h4>
         <img id="time" src="../sources/time.png" class="img-fluid">
-        <h4 id="pts"></h4>
+        <h4 id="pts">0</h4>
         <img id="score" src="../sources/score.png" class="img-fluid">
         <img id="titulito" src="../sources/aquawaka.png" class="img-fluid">
         <!-- <h4 id="hitsPts">12</h4> -->
