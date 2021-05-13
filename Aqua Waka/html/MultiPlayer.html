@@ -21,6 +21,46 @@
 	<script type="text/javascript" src="js/libs/three/FBXLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/inflate.min.js"></script>
 
+	<script id="shader-vs" type="x-shader/x-vertex">
+		varying vec3 lightdir;
+ 		varying vec3 eyenorm;
+		 varying vec2 vUv;
+ 		uniform vec3 lightpos;
+ 		void main() {
+			 vUv=uv;
+ 		gl_Position = projectionMatrix* modelViewMatrix * vec4( position, 1.0);
+		
+ 		vec4 tmp = modelViewMatrix * vec4 (lightdir, 1.0);
+ 		lightdir = tmp.xyz;
+		
+ 		eyenorm = normalMatrix * normal;
+ 		}
+	</script>
+	
+	<script id="shader-fs" type="x-shader/x-fragment">
+		varying vec3 lightdir;
+ 		varying vec3 eyenorm;
+		 varying vec2 vUv;
+		uniform sampler2D	Textura;
+		uniform vec2 uvOffset;
+
+			
+ 		void main() {
+ 		       vec3 lightdir = vec3 (0,0,1);
+		//float4 texAlbedo= Textura.Sample(colorSampler, 0.0);
+ 		float ndotl = dot (normalize (eyenorm), normalize (lightdir));
+ 		if (ndotl > 0.8) {
+ 			ndotl = 1.0;
+ 		} else if (ndotl > 0.6) {
+ 			ndotl = 0.6;
+ 		} else {
+ 			ndotl = 0.2;
+ 		}
+ 		gl_FragColor =texture2D(Textura, vUv + uvOffset)*(vec4 (ndotl, ndotl, ndotl, 1.0));
+ 		}
+	    
+	</script>
+
 	<script type="text/javascript">
 
         $("#btnUp").click(function(){
@@ -95,6 +135,25 @@
 
 				object.rotation.y = THREE.Math.degToRad(90);
 
+				var materialshader = new THREE.ShaderMaterial({
+					uniforms: {
+						Textura: { type: "t", value: THREE.ImageUtils.loadTexture( "assets/Island/texturatotal2.png" ) },
+						uvOffset : { type : 'v', value : new THREE.Vector2(0,0)}
+ 						},
+					vertexShader : document.getElementById("shader-vs").textContent,
+					fragmentShader : document.getElementById("shader-fs").textContent,
+					wrapping: THREE.ClampToEdgeWrapping,
+   					shading: THREE.SmoothShading,
+   					side: THREE.DoubleSide,
+					transparent:true
+				});
+
+				object.traverse(function(child) {
+    			    if (child instanceof THREE.Mesh) {
+    			        child.material =materialshader;
+    			    }
+    			});
+
 				//var isla3 = object.clone();
 				scene.add(object);
 
@@ -114,6 +173,25 @@
 
 				object.rotation.y = THREE.Math.degToRad(112);
 
+				var materialshader = new THREE.ShaderMaterial({
+					uniforms: {
+						Textura: { type: "t", value: THREE.ImageUtils.loadTexture( "assets/Island/texturatotal.png" ) },
+						uvOffset : { type : 'v', value : new THREE.Vector2(0,0)}
+ 						},
+					vertexShader : document.getElementById("shader-vs").textContent,
+					fragmentShader : document.getElementById("shader-fs").textContent,
+					wrapping: THREE.ClampToEdgeWrapping,
+   					shading: THREE.SmoothShading,
+   					side: THREE.DoubleSide,
+					transparent:true
+				});
+
+				object.traverse(function(child) {
+    			    if (child instanceof THREE.Mesh) {
+    			        child.material =materialshader;
+    			    }
+    			});
+
 				scene.add(object);
 			});
 
@@ -127,11 +205,31 @@
 				object.scale.y = 3.0;
 				object.scale.z = 3.0;
 
+				var materialshader = new THREE.ShaderMaterial({
+					uniforms: {
+						Textura: { type: "t", value: THREE.ImageUtils.loadTexture( "assets/pokeisla/lambert2.png" ) },
+						uvOffset : { type : 'v', value : new THREE.Vector2(0,0)}
+ 						},
+					vertexShader : document.getElementById("shader-vs").textContent,
+					fragmentShader : document.getElementById("shader-fs").textContent,
+					wrapping: THREE.ClampToEdgeWrapping,
+   					shading: THREE.SmoothShading,
+   					side: THREE.DoubleSide,
+					transparent:true
+				});
+
+				object.traverse(function(child) {
+    			    if (child instanceof THREE.Mesh) {
+    			        child.material =materialshader;
+    			    }
+    			});
+
 				var isla2 = object.clone();
 				isla2.position.x = 80;
 				object.rotation.y = THREE.Math.degToRad(-50);
 
 				object.rotation.y = THREE.Math.degToRad(50);
+
 				scene.add(object);
 				scene.add(isla2);
 			});
@@ -181,6 +279,26 @@
 				object.scale.x = 1.2;
 				object.scale.y = 1.2;
 				object.scale.z = 1.2;
+
+				var materialshader = new THREE.ShaderMaterial({
+					uniforms: {
+						Textura: { type: "t", value: THREE.ImageUtils.loadTexture( "assets/salvavidas/salva.png" ) },
+						uvOffset : { type : 'v', value : new THREE.Vector2(0,0)}
+ 						},
+					vertexShader : document.getElementById("shader-vs").textContent,
+					fragmentShader : document.getElementById("shader-fs").textContent,
+					wrapping: THREE.ClampToEdgeWrapping,
+   					shading: THREE.SmoothShading,
+   					side: THREE.DoubleSide,
+					transparent:true
+				});
+
+				object.traverse(function(child) {
+    			    if (child instanceof THREE.Mesh) {
+    			        child.material =materialshader;
+    			    }
+    			});
+
 				scene.add(object);
 				
 			});
