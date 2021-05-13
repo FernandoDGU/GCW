@@ -36,6 +36,15 @@ body {
 	color: white;
 	font-size: 45px;
 }
+#Nivelfont{
+	position: absolute;
+	z-index: 50;
+	top: 90px;
+	left: 130px;
+	font-family: "Arial Black";
+	color: white;
+	font-size: 25px;
+}
 #score{
 	position: absolute;
 	max-height: 90px;
@@ -185,13 +194,20 @@ body {
 }
 
 #scoreLose{
+	
 	position: absolute;
 	z-index: 50;
-	top: 102px;
-	left: 235px;
+	top: 155px;
+	left: 196px;
 	font-family: "Arial Black";
 	color: #ff0000;
 	font-size: 40px;
+	width: 200px;
+	height: 60px;
+	border: none;
+	border-radius: 30px;
+	text-align: center;
+	align-items: center;
 }
 
 #hitsLose{

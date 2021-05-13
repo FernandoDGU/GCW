@@ -21,6 +21,8 @@
 	<script type="text/javascript" src="js/libs/three/FBXLoader.js"></script>
 	<script type="text/javascript" src="js/libs/three/inflate.min.js"></script>
 
+	<script  script type="text/javascript" src="js/libs/jquery/Puntos.js"></script>
+
 	<script id="shader-vs" type="x-shader/x-vertex">
 		varying vec3 lightdir;
  		varying vec3 eyenorm;
@@ -533,6 +535,8 @@
 				cube2.rotation.x = THREE.Math.degToRad(0);
 			}
 
+			//Primer nivel
+			if(cambioNiveles == 0){
 
 			// Pez10
 				if(contadores[10] == false){
@@ -659,7 +663,33 @@
 					if(cubesMov[9].position.y <= -10)
 					contadores[9] = false;
 				}
+
+				perdiste = n-1;
+				
+				if(perdiste > 20){
+
+					if(puntaje > 100){
+						PausaGame();
+						$('#exampleModal2').modal('show');
+					}else{
+						PausaGame();
+						$('#exampleModal3').modal('show');
+					}
+				
+				}
+
+			}
+
+			if(cambioNiveles == 1){
+				perdiste = n-1;
+				
+				if(perdiste > 20){
+					PausaGame();
+					$('#exampleModal3').modal('show');
+				}
+			}
 			
+
 			if (isWorldReady[0]) {
 				
 				// camera.rotation.y += yaw * deltaTime;
@@ -724,6 +754,12 @@
 
 			var material2 = new THREE.MeshPhongMaterial({
 				color: new THREE.Color(0.1, 1.0, 0.0),
+				opacity: .7,
+				transparent: true,
+			});
+
+			var material3 = new THREE.MeshPhongMaterial({
+				color: new THREE.Color(0.1, 1.0, 1.0),
 				opacity: .7,
 				transparent: true,
 			});
@@ -881,37 +917,33 @@
 
 						switch(collisionResults[0].object.name){
 							case "Piranha": 
-								puntaje = "Piranha";
+								puntaje = (puntaje + 1);
 								break;	
 							
 							case "LightFish": 
-								// i = i +1;
-								puntaje = "LightFish"
+								
 								break;
 
 							case "Globo": 
-								// i = i +1;
-								puntaje = "Globo"
+								puntaje = (puntaje -1);
 								break;
 
 							case "Pulpo": 
-								// i = i +1;
-								puntaje = "Pulpo"
+								puntaje = puntaje +1;
 								break;
 
 							case "Tiburon": 
-								// i = i +1;
-								puntaje = "Tiburon"
 								break;
 						}
 						
-					$("#pts").html("<p>" + puntaje + "</p>")
-					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
-					}else $("#pts").html("<p>No colision</p>")
+					$("#pts").html("<p>" + puntaje + "</p>");
+					document.getElementById("scoreVictory").value = puntaje;
+					document.getElementById("scoreLose").value = puntaje;
+					}
 				}
 		}
 
-		// -------------------------------FALTA HACER ESTO -------------------------------------------------------------
+		// -------------------------------FALTA HACER ESTO --------------------------------------------------------------------------//CHECAR
 		function Colisiona2(CuboMazo2){
 			var originPoint = CuboMazo2.position.clone();
 				for(var vertexIndex = 0; vertexIndex < CuboMazo2.geometry.vertices.length; vertexIndex++){
@@ -951,8 +983,9 @@
 						}
 						
 					$("#pts").html("<p>" + puntaje + "</p>")
-					//document.getElementById("hitsPts").contentWindow.document.getElementById("PlayScreen").innerHTML = i;
-					}else $("#pts").html("<p>No colision</p>")
+					
+					//falta aqui
+					}
 				}
 		}
 		// -------------------------------FALTA HACER ESTO -------------------------------------------------------------
@@ -1024,20 +1057,16 @@
 	<div class="container">
     	<div class="filadatos row justify-content-center">
     	</div>
-    	<h4 id="timming">00:35</h4>
+    	<h4 id="timming"></h4>
         <img id="time" src="../sources/time.png" class="img-fluid">
-        <h4 id="pts">1200</h4>
+        <h4 id="pts">0</h4>
+        <h5 id="Nivelfont">LEVEL: 1</h5>
         <img id="score" src="../sources/score.png" class="img-fluid">
         <img id="titulito" src="../sources/aquawaka.png" class="img-fluid">
 
-        <input type="image" id="btnPausa" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <input type="image" id="btnPausa" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="PausaGame()">
         <input type="image" id="btnVictory" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal2">
         <input type="image" id="btnLose" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal3">
-
-        <div id="Prueba" >
-            <!-- <object data="Models.html"></object> -->
-            <!-- <object data="ModelsMulti.html" type="text/html" width="900" height="500"></object> -->
-            <!-- <script type="text/javascript" src="index.js"></script> -->
         </div>
     </div>
 
@@ -1051,7 +1080,7 @@
         <a >
 			<input type="image" class="img-fluid" id="btnPBack" src="../sources/back.png" alt="back" onclick="salir()">
 		</a>
-        <input type="image" class="img-fluid" id="btnPPlay" src="../sources/play.png" alt="play" data-bs-dismiss="modal">
+        <input type="image" class="img-fluid" id="btnPPlay" src="../sources/play.png" alt="play" data-bs-dismiss="modal" onclick="PlayGame()">
       </div>
     </div>
   </div>
@@ -1066,7 +1095,7 @@
                     <div>
                         <form id="formusername" class="mb-2">
                             <div class="form-group mb-2">
-                            	<p id="scoreVictory">3400</p>
+                            	<input id="scoreVictory" type="number" value="" readonly>
                                 <label id="userinp" for="usernameinput">SHARE YOUR SCORE</label>
                                 <input type="text" class="form-control" id="usernameinput" placeholder="Enter an Username">
                                 <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal" onclick="writeData()">
@@ -1090,9 +1119,8 @@
         <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
             <div class="modal-body">
                 <img id="titlelose" src="../sources/lose.png" class="img-fluid">
-                <p id="scoreLose">1300</p>
-                <p id="hitsLose">13</p>
-                <img id="sigLose" class="img-fluid" src="../sources/losesignal.png">
+                <input id="scoreLose" type="number" value="" readonly>
+                <img id="sigLose" class="img-fluid" src="../sources/losesignal2.png">
                 <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnLBack" src="../sources/back.png" alt="back"></a>
             </div>
         </div>
