@@ -68,6 +68,18 @@
 
 		$(document).ready(function(){
 
+	//Musica arreglada
+        var musicastop = localStorage.getItem('musica');
+
+        if (musicastop == 'verdadero')
+        {
+            document.getElementById("musicBegin").play();
+        }
+
+        if (musicastop == 'falso')
+        {
+            document.getElementById("musicBegin").pause();
+        }
 			setupScene();
 
 			loadOBJWithMTL("assets/Island/", "Island.obj", "Island.mtl", (object) => {
@@ -761,6 +773,7 @@
 
 <body>
 
+	<audio src="../sounds/AWmusic.mp3" preload="auto" autoplay id="musicBegin"></audio>
 	<div id="scene-section" class= "Prueba" ></div>
 	<div id="Colision"></div>
 
