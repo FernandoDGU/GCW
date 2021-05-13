@@ -47,10 +47,11 @@
 		 varying vec2 vUv;
 		uniform sampler2D	Textura;
 		uniform vec2 uvOffset;
+		uniform vec3 luz;
 
 			
  		void main() {
- 		       vec3 lightdir = vec3 (0,0,1);
+ 		       vec3 lightdir = luz;
 		//float4 texAlbedo= Textura.Sample(colorSampler, 0.0);
  		float ndotl = dot (normalize (eyenorm), normalize (lightdir));
  		if (ndotl > 0.8) {
@@ -155,7 +156,8 @@
 				var materialshader = new THREE.ShaderMaterial({
 					uniforms: {
 						Textura: { type: "t", value: THREE.ImageUtils.loadTexture( "assets/Island/texturatotal2.png" ) },
-						uvOffset : { type : 'v', value : new THREE.Vector2(0,0)}
+						uvOffset : { type : 'v', value : new THREE.Vector2(0,0)},
+						luz : { type : 'v', value : new THREE.Vector3(1,1,1)}
  						},
 					vertexShader : document.getElementById("shader-vs").textContent,
 					fragmentShader : document.getElementById("shader-fs").textContent,
@@ -263,6 +265,7 @@
 
 				object.rotation.y = THREE.Math.degToRad(180);
 				object.rotation.x = THREE.Math.degToRad(-4);
+
 				scene.add(object);
 			});
 
