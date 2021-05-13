@@ -104,19 +104,22 @@
 		var isWorldReady = [false, false];
 		var texturewater;
 		var objs = [];
-		var cubesCol = [];
+		var cubesCol = [], cubesMov = [];
 		var i = 0;
 		var movpos = 0, moval = 0.001;
 		var cambioNiveles = 0;
 		var contador = false;
+		var contadores = [];
 		var ptscore = 0;
 		//Colisiones var
 		var collidableMeshList = [];
 		var ptsscore;
-		//Particles var
 		var particleTexture, particleGroup, particleAttributes;
-		// var totalParticles = 200;
-		// var radiusRange = 50;
+		
+		//Declaracion de contadores
+		for(i = 1; i< 20; i++){
+			contadores[i] = false
+		}
 		localStorage.setItem('Usuario', i);
 		$(document).ready(function(){
 		
@@ -354,7 +357,6 @@
 			var loader = new THREE.FBXLoader();
 			loader.load('assets/FBX/Pira.fbx', model => {
 				var mixer = new THREE.AnimationMixer(model);
-
 				//Scale
 				// model.scale.x = 1.20;
 				// model.scale.y = 1.20;
@@ -375,7 +377,7 @@
 				var action = mixer.clipAction(model.animations[0]);
 				
 				//scene.add(model);
-				cube3.add(model);
+				cubesMov[1].add(model);
 				// cubesCol.add(model);
 				// Colision
 				//sObj = new THREE.Box3().setFromObject(model);
@@ -391,23 +393,23 @@
 			//[Nivel 1]
 
 
-			if(cambioNiveles == 2){
-			//FRENTE
-			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 38, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 40, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			//if(cambioNiveles == 0){
+			//FRENTE 
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 0, 'Globo', loader, 0.20, 0.20,0.20,-25, -90, cubesMov[2]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0, cubesMov[3]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0, cubesMov[4]);
 
 			//Medio
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -25, 2, 25, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 2, 25, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 25, 2, 25, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0,cubesMov[5]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0, cubesMov[6]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0, cubesMov[7]);
 			
 			//ATRAS
-			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 10, 'Globo', loader, 1.10, 1.10,1.10,-25, -90);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', -20, 2, 10, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
-			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 20, 2, 10, 'Pulpo', loader, 4.20, 4.20,4.20,-25, 0);
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, 0, 'Globo', loader, 0.20, 0.20,0.20,-25, -90, cubesMov[8]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55,-25, 0, cubesMov[9]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55,-25, 0, cubesMov[10]);
 
-			}
+			//}
 			//Tiburon
 			loader.load('assets/FBX/AnimacionesTiburon.fbx', model => {
 				var mixer = new THREE.AnimationMixer(model);
@@ -466,7 +468,8 @@
 		});
 
 		function ModelsFbx(nombreArchivo, positionx, positiony, positionz,
-		 name, loader, scalax, scalay, scalaz, rotationx, rotationy){
+		 name, loader, scalax, scalay, scalaz, rotationx, rotationy, pcubemove){
+
 			loader.load(nombreArchivo, model => {
 				var mixer = new THREE.AnimationMixer(model);
 
@@ -486,7 +489,7 @@
 
 				var action = mixer.clipAction(model.animations[0]);
 
-				scene.add(model);
+				pcubemove.add(model);
 				action.play();
 				action.setLoop(THREE.Loop);
 				action.timeScale = 500;
@@ -558,27 +561,147 @@
 
 			//Primer nivel 
 			if(cambioNiveles == 0){
-				// movpos += moval;
-				// if(movpos >= 1){
-				// 	moval -= 0.001;
+				// if(contador == false){
+				// 	if(cubesMov[1].position.y < -1){
+				// 	cubesMov[1].position.y += 0.1;
+				// 	cubesMov[2].position.y += 0.1;
+				// }
+				// 	else
+				// 	contador = true;
+				// }
+
+				// if(contador==true){
+				// 	cubesMov[1].position.y -= 0.1;
+				// 	cubesMov[2].position.y -= 0.1;
+				// 	if(cubesMov[1].position.y <= -11)
+				// 		contador = false;
+				// }
 					
-				// }
-				// if(movpos <= -1){
-				// 	moval += 0.001;
-				// }
-				if(contador == false){
-					if(cube3.position.y < -1)
-					cube3.position.y += 0.1;
+				// Pez10
+				if(contadores[10] == false){
+					if(cubesMov[10].position.y < -1)
+					cubesMov[10].position.y += 0.1;
 					else
-					contador = true;
+					contadores[10] = true;
 				}
 
-				if(contador==true){
-					cube3.position.y -= 0.1;
-					if(cube3.position.y <= -11)
-						contador = false;
+				if(contadores[10] == true){
+					cubesMov[10].position.y -= 0.1;
+					if(cubesMov[10].position.y <= -11)
+					contadores[10] = false;
 				}
-			
+
+				//Pez2
+				if(contadores[2] == false){
+					if(cubesMov[2].position.y < -1)
+					cubesMov[2].position.y += 0.1;
+					else
+					contadores[2] = true;
+				}
+
+				if(contadores[2] == true){
+					cubesMov[2].position.y -= 0.1;
+					if(cubesMov[2].position.y <= -14)
+					contadores[2] = false;
+				}
+
+				// Pez3
+				if(contadores[3] == false){
+					if(cubesMov[3].position.y < -1)
+					cubesMov[3].position.y += 0.1;
+					else
+					contadores[3] = true;
+				}
+
+				if(contadores[3] == true){
+					cubesMov[3].position.y -= 0.1;
+					if(cubesMov[3].position.y <= -12)
+					contadores[3] = false;
+				}
+
+				// Pez4
+				if(contadores[4] == false){
+					if(cubesMov[4].position.y < -1)
+					cubesMov[4].position.y += 0.1;
+					else
+					contadores[4] = true;
+				}
+
+				if(contadores[4] == true){
+					cubesMov[4].position.y -= 0.1;
+					if(cubesMov[4].position.y <= -15)
+					contadores[4] = false;
+				}
+
+				// Pez5
+				if(contadores[5] == false){
+					if(cubesMov[5].position.y < -1)
+					cubesMov[5].position.y += 0.1;
+					else
+					contadores[5] = true;
+				}
+
+				if(contadores[5] == true){
+					cubesMov[5].position.y -= 0.1;
+					if(cubesMov[5].position.y <= -16)
+					contadores[5] = false;
+				}
+
+				// Pez6
+				if(contadores[6] == false){
+					if(cubesMov[6].position.y < -1)
+					cubesMov[6].position.y += 0.1;
+					else
+					contadores[6] = true;
+				}
+
+				if(contadores[6] == true){
+					cubesMov[6].position.y -= 0.1;
+					if(cubesMov[6].position.y <= -9)
+					contadores[6] = false;
+				}
+
+				// Pez7
+				if(contadores[7] == false){
+					if(cubesMov[7].position.y < -1)
+					cubesMov[7].position.y += 0.1;
+					else
+					contadores[7] = true;
+				}
+
+				if(contadores[7] == true){
+					cubesMov[7].position.y -= 0.1;
+					if(cubesMov[7].position.y <= -10)
+					contadores[7] = false;
+				}
+
+				// Pez8
+				if(contadores[8] == false){
+					if(cubesMov[8].position.y < -1)
+					cubesMov[8].position.y += 0.1;
+					else
+					contadores[8] = true;
+				}
+
+				if(contadores[8] == true){
+					cubesMov[8].position.y -= 0.1;
+					if(cubesMov[8].position.y <= -17)
+					contadores[8] = false;
+				}
+
+				// Pez9
+				if(contadores[9] == false){
+					if(cubesMov[9].position.y < -1)
+					cubesMov[9].position.y += 0.1;
+					else
+					contadores[9] = true;
+				}
+
+				if(contadores[9] == true){
+					cubesMov[9].position.y -= 0.1;
+					if(cubesMov[9].position.y <= -10)
+					contadores[9] = false;
+				}
 
 				
 			}else{
@@ -597,7 +720,7 @@
 				objs.forEach(({mixer})=> {mixer.update(clock.getDelta());});
 				
 
-				cube3.translateY (movpos * deltaTime)
+				// cube3.translateY (movpos * deltaTime)
 				// Mov_Y(cube, mov[0]);
 
 			}
@@ -678,14 +801,14 @@
 			//------------------------------------------
 			//Cubos para mover
 			cube3 = new THREE.Mesh(geometry, material3);
-			cube3.position.y = -3;
 			cube3.position.x = 25;
+			cube3.position.y = -3;
 			cube3.position.z = 25;
 			cube3.scale.x = 5;
 			cube3.scale.y = 5;
 			cube3.scale.z = 5;
 			cube3.name = "cube03";
-			scene.add(cube3);
+			// scene.add(cube3);
 
 			// scene.add(cube3);
 
@@ -697,23 +820,28 @@
 
 			//Acomodar posiciones de cubos en modelos
 
+			// Cubos de mov nivel 1
+			// cubesMov[1] = createCubesMov(geometry, material3, cubesMov[1], 25, -3, 25, 5, 5, 5)
+			cubesMov[2] = createCubesMov(geometry, material, cubesMov[2], 0, 0.5, 38, 5, 5, 5)
+			cubesMov[3] = createCubesMov(geometry, material, cubesMov[3], -20, 2, 40, 5, 5, 5)
+			cubesMov[4] = createCubesMov(geometry, material, cubesMov[4], 20, 2, 40, 5, 5, 5)
+			cubesMov[5] = createCubesMov(geometry, material, cubesMov[5], -25, 2, 25, 5, 5, 5)
+			cubesMov[6] = createCubesMov(geometry, material, cubesMov[6], 0, 2, 25, 5, 5, 5)
+			cubesMov[7] = createCubesMov(geometry, material, cubesMov[7], 25, 2, 25, 5, 5, 5)
+			cubesMov[8] = createCubesMov(geometry, material, cubesMov[8], 0, 0.5, 10, 5, 5, 5)
+			cubesMov[9] = createCubesMov(geometry, material, cubesMov[9], -20, 2, 10, 5, 5, 5)
+			cubesMov[10] = createCubesMov(geometry, material, cubesMov[10], 20, 2, 10, 5, 5, 5)
+
 			//Acomodar cubos para Escenario 1
 			if(cambioNiveles == 0){
-			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha", cube3); //Piranha 25, 3, 28
-			createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo", 0); //Globo
-			createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo", 0); // Pulpo
-			createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon", 0); // TIBURON
-			createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish", 0); //Pez raro
+			// createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha", cubesMov[1]); //Piranha 25, 3, 28
+			// createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo", 0); //Globo
+			// createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo", 0); // Pulpo
+			// createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon", 0); // TIBURON
+			// createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish", 0); //Pez raro
 			}
-
-
 			//Escenario 2
-
-
 			//Escenario 3
-
-
-
 			// camera.rotation.y = THREE.Math.degToRad(-45);	
 			//------------Creacion de particula-----------------
 			createParticle2(30, 8, 45);
@@ -759,8 +887,21 @@
 			collidableMeshList.push(Pname);
 		}
 
-		function createCubesMov (){
+		function createCubesMov (Pgeometry, Pmaterial, Pcube, px, py , pz, sx, sy, sz){
+			Pcube = new THREE.Mesh(Pgeometry, Pmaterial);
+			// Position cubes
+			Pcube.position.x = px;
+			Pcube.position.y = py;
+			Pcube.position.z = pz;
 
+			// Scale cubes
+			Pcube.scale.x = sx;
+			Pcube.scale.y = sy;
+			Pcube.scale.z = sz;
+
+			scene.add(Pcube);
+
+			return Pcube;
 		}
 
 
@@ -886,16 +1027,20 @@
 	}
 
 
-		function Mov_Y(Model, valor){
-		
-			if(valor > 10){
-				Model.position.y -= valor; 
-				valor--;	
+		function Mov_Y(cubesy, valor, valor2){
+			if (contador == false){
+				if(cubesy.position.y < valor){
+					cubesy.position.y +=0.1 ;
+				}
 			}else{
-				Model.position.y += valor;
-				valor++;	
+				contador = true;
 			}
-			
+
+			if(contador == true){
+				cubesy.position.y -= 0.1;
+				if(cubesy.position.y <= valor2)
+					contador = false;
+			}
 		}
 
 		
