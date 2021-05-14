@@ -112,6 +112,8 @@
 
 		var perdiste;
 		var puntaje = 0;
+		var puntajeP2 = 0;
+		var puntajeGeneral= 0;
 
 		for(i = 1; i< 20; i++){
 			contadores[i] = false
@@ -665,10 +667,10 @@
 				}
 
 				perdiste = n-1;
-				
+
 				if(perdiste > 20){
 
-					if(puntaje > 100){
+					if(puntaje > 200){ //200 por que es multiplayer
 						PausaGame();
 						$('#exampleModal2').modal('show');
 					}else{
@@ -943,7 +945,7 @@
 				}
 		}
 
-		// -------------------------------FALTA HACER ESTO --------------------------------------------------------------------------//CHECAR
+		// -------------------------------FALTA HACER ESTO/ SUPER CHECAR ESTO EN EL PUNTAJE --------------------------------------------------------------------------//CHECAR
 		function Colisiona2(CuboMazo2){
 			var originPoint = CuboMazo2.position.clone();
 				for(var vertexIndex = 0; vertexIndex < CuboMazo2.geometry.vertices.length; vertexIndex++){
@@ -958,33 +960,29 @@
 
 						switch(collisionResults[0].object.name){
 							case "Piranha": 
-								puntaje = "Piranha";
+								puntaje = (puntaje + 1);
 								break;	
 							
 							case "LightFish": 
-								// i = i +1;
-								puntaje = "LightFish"
+								
 								break;
 
 							case "Globo": 
-								// i = i +1;
-								puntaje = "Globo"
+								puntaje = (puntaje -1);
 								break;
 
 							case "Pulpo": 
-								// i = i +1;
-								puntaje = "Pulpo"
+								puntaje = puntaje +1;
 								break;
 
 							case "Tiburon": 
-								// i = i +1;
-								puntaje = "Tiburon"
+								
 								break;
 						}
-						
-					$("#pts").html("<p>" + puntaje + "</p>")
-					
-					//falta aqui
+
+					$("#pts").html("<p>" + puntaje + "</p>");
+					document.getElementById("scoreVictory").value = puntaje;
+					document.getElementById("scoreLose").value = puntaje;
 					}
 				}
 		}
