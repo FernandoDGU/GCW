@@ -708,12 +708,35 @@
 			} 
 			
 			if(cambioNiveles == 1){
-				perdiste = n-1;
+				//Se bajan los del nivel 1 
+				cubesMov[2].position.y = -10;
+				cubesMov[3].position.y = -10;
+				cubesMov[4].position.y = -10;
+				cubesMov[5].position.y = -10;
+				cubesMov[6].position.y = -10;
+				cubesMov[7].position.y = -10;
+				cubesMov[8].position.y = -10;
+				cubesMov[9].position.y = -10;
+				cubesMov[10].position.y = -10;
 				
-				if(perdiste > 20){
-					PausaGame();
-					$('#exampleModal3').modal('show');
-				}
+
+				//Secuencia para hacer que suban y bajen los del nivel 2 
+
+
+
+				// perdiste = n-1;
+				
+				// if(perdiste > 20){
+				// 	PausaGame();
+				// 	$('#exampleModal3').modal('show');
+				// }
+			}
+
+			if(cambioNiveles == 2){
+				 //Se bajan los del nivel 2
+
+
+			 	//Secuencia par hacer que suban y bajen los del nivel 3
 			}
 			
 
@@ -839,15 +862,6 @@
 			cubesMov[8] = createCubesMov(geometry, material, cubesMov[8], 0, 0.5, 10, 5, 5, 5)
 			cubesMov[9] = createCubesMov(geometry, material, cubesMov[9], -20, 2, 10, 5, 5, 5)
 			cubesMov[10] = createCubesMov(geometry, material, cubesMov[10], 20, 2, 10, 5, 5, 5)
-
-			//Acomodar cubos para Escenario 1
-			// if(cambioNiveles == 0){
-			// createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha", cubesMov[1]); //Piranha 25, 3, 28
-			// createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo", 0); //Globo
-			// createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo", 0); // Pulpo
-			// createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon", 0); // TIBURON
-			// createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish", 0); //Pez raro
-			// }
 			
 			//Colisiones nivel 1
 			createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.8, "Globo", cubesMov[2]);
@@ -859,6 +873,12 @@
 			createCubes(geometry, material, cubesCol[8], 0,2,0, 1.5, 1.5, 0.8, "Globo", cubesMov[8]);
 			createCubes(geometry, material, cubesCol[9], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[9]);
 			createCubes(geometry, material, cubesCol[10], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[10]);
+
+
+			//Ir los otros cubos del nivel 2
+
+			// Colisiones nivel 2 
+
 
 			// camera.rotation.y = THREE.Math.degToRad(-45);	
 			//------------Creacion de particula-----------------
@@ -943,6 +963,7 @@
 								break;	
 							
 							case "LightFish": 
+								puntaje = (puntaje + 2);
 								break;
 
 							case "Globo": 
@@ -954,6 +975,7 @@
 								break;
 
 							case "Tiburon": 
+								puntaje = puntaje + 3; 
 								break;
 						}
 						
