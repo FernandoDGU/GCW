@@ -403,6 +403,42 @@
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx',0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55,-25, 0, cubesMov[9]);
 			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx',0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55,-25, 0, cubesMov[10]);
 
+			//----------------[Nivel 2]
+			//FRENTE
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, -0.7, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0, cubesMov[11]);
+			ModelsFbx('assets/FBX/Pira.fbx', 0, 0.5, -0.4, 'Piranha', loader, 0.20, 0.20,0.20,-25, 0, cubesMov[12]);
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, -0.7, 'Globo', loader, 0.20, 0.20,0.20,-25, -90, cubesMov[13]);
+
+			//Medio
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0.5, 0.5, -0.3, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0,cubesMov[14]);
+			ModelsFbx('assets/FBX/Pira.fbx', 0, 0.5, -0.2, 'Piranha', loader, 0.20, 0.20,0.20, -25, 0, cubesMov[15]);
+			ModelsFbx('assets/FBX/Pira.fbx', 0, 0.5, 0, 'Piranha', loader, 0.20, 0.20,0.20, -25, 0, cubesMov[16]);
+
+			//ATRAS
+			ModelsFbx('assets/FBX/AnimacionesGlobo.fbx', 0, 0.5, -1.3, 'Globo', loader, 0.20, 0.20,0.20,-25, -90, cubesMov[17]);
+			ModelsFbx('assets/FBX/Pira.fbx', 0, 0.5, 0.2, 'Piranha', loader, 0.20, 0.20,0.20,-25, 0, cubesMov[18]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55,-25, 0, cubesMov[19]);
+
+
+			//----------------[Nivel 3]
+			//FRENTE
+			ModelsFbx('assets/FBX/Pira.fbx', 0, 0.5, 0, 'Piranha', loader, 0.20, 0.20,0.20,-25, 0, cubesMov[20]);
+			ModelsFbx('assets/FBX/AnimacionesTiburon.fbx', 0, 0.5, 0, 'Tiburon', loader, 0.035, 0.035,0.035, -55, -45, cubesMov[21]);
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, 0, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0, cubesMov[22]);
+			
+
+			//Medio
+			ModelsFbx('assets/FBX/Pira.fbx', 0, 0.5, 0, 'Piranha', loader, 0.20, 0.20,0.20,-25, 0, cubesMov[23]);
+			ModelsFbx('assets/FBX/AnimacionesTiburon.fbx', 0, 0.5, 0, 'Tiburon', loader, 0.040, 0.040,0.040, -55, -45, cubesMov[24]);
+			ModelsFbx('assets/FBX/LightFish.fbx', 0, 0.5, 0, 'LightFish', loader, 0.20, 0.20,0.20,-5, 0, cubesMov[25]);
+
+			//ATRAS
+			ModelsFbx('assets/FBX/AnimacionesPulpoHelp.fbx', 0, 0.5, -0.6, 'Pulpo', loader, 0.55, 0.55,0.55, -25, 0, cubesMov[26]);
+			ModelsFbx('assets/FBX/LightFish.fbx', 0, 0.5, 0, 'LightFish', loader, 0.20, 0.20,0.20,-5, 0, cubesMov[27]);
+			ModelsFbx('assets/FBX/AnimacionesTiburon.fbx', 0, 0.5, 0, 'Tiburon', loader, 0.04, 0.04,0.04, -35, -45, cubesMov[28]);
+
+
+
 			//LightFish
 			loader.load('assets/FBX/LightFish.fbx', model => {
 				var mixer = new THREE.AnimationMixer(model);
@@ -512,6 +548,16 @@
 				
 				cube.rotation.x = THREE.Math.degToRad(0);
 			}
+
+			//CAMBIO DE NIVEL POR TECLAS
+			if(keys["Y"]){
+				//movpos = 20;
+				cambioNiveles = 1;
+			}else if (keys["H"]){
+				//movpos = -20;
+				cambioNiveles = 2;
+			}
+
 
             //Segundo martillo
 
@@ -680,15 +726,58 @@
 				
 				}
 
+				//Para que no se vea bajar los modelos del nivel 2 y 3 
+				cubesMov[20].position.y = -10;
+				cubesMov[21].position.y = -10;
+				cubesMov[22].position.y = -10;
+				cubesMov[23].position.y = -10;
+				cubesMov[24].position.y = -10;
+				cubesMov[25].position.y = -10;
+				cubesMov[26].position.y = -10;
+				cubesMov[27].position.y = -10;
+				cubesMov[28].position.y = -10;
+
 			}
 
 			if(cambioNiveles == 1){
-				perdiste = n-1;
+								//Se bajan los del nivel 1 
+				cubesMov[2].position.y = -10;
+				cubesMov[3].position.y = -10;
+				cubesMov[4].position.y = -10;
+				cubesMov[5].position.y = -10;
+				cubesMov[6].position.y = -10;
+				cubesMov[7].position.y = -10;
+				cubesMov[8].position.y = -10;
+				cubesMov[9].position.y = -10;
+				cubesMov[10].position.y = -10;
 				
-				if(perdiste > 20){
-					PausaGame();
-					$('#exampleModal3').modal('show');
-				}
+
+				//Secuencia para hacer que suban y bajen los del nivel 2 
+
+
+
+				// perdiste = n-1;
+				
+				// if(perdiste > 20){
+				// 	PausaGame();
+				// 	$('#exampleModal3').modal('show');
+				// }
+			}
+
+			if(cambioNiveles == 2){
+				 //Se bajan los del nivel 2
+				cubesMov[11].position.y = -10;
+				cubesMov[12].position.y = -10;
+				cubesMov[13].position.y = -10;
+				cubesMov[14].position.y = -10;
+				cubesMov[15].position.y = -10;
+				cubesMov[16].position.y = -10;
+				cubesMov[17].position.y = -10;
+				cubesMov[18].position.y = -10;
+				cubesMov[19].position.y = -10;
+
+
+			 	//Secuencia par hacer que suban y bajen los del nivel 3
 			}
 			
 
@@ -835,15 +924,57 @@
 			createCubes(geometry, material, cubesCol[10], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[10]);
 
 
-			// createCubes(geometry, material, cubesCol[1], 0,2,0, 1.5, 1.5, 0.7, "Piranha"); //Piranha 25, 3, 28
-			// createCubes(geometry, material, cubesCol[2], 0,3,38, 7, 7,7, "Globo"); //Globo
-			// createCubes(geometry, material, cubesCol[3], -10,3,15, 7, 7,7, "Pulpo"); // Pulpo
-			// createCubes(geometry, material, cubesCol[4], -30,3,25,10, 10,10, "Tiburon"); // TIBURON
-			// createCubes(geometry, material, cubesCol[5], 0,3,25,7, 7,7, "LightFish"); //Pez raro
+			//Cubos de mov nivel 2
+						
+			cubesMov[11] = createCubesMov(geometry, material, cubesMov[11], 0, 0.5, 38, 5, 5, 5);
+			cubesMov[12] = createCubesMov(geometry, material, cubesMov[12], -20, 2, 40, 5, 5, 5);
+			cubesMov[13] = createCubesMov(geometry, material, cubesMov[13], 20, 2, 40, 5, 5, 5);
+			cubesMov[14] = createCubesMov(geometry, material, cubesMov[14], -25, 2, 25, 5, 5, 5);
+			cubesMov[15] = createCubesMov(geometry, material, cubesMov[15], 0, 2, 25, 5, 5, 5);
+			cubesMov[16] = createCubesMov(geometry, material, cubesMov[16], 25, 2, 25, 5, 5, 5);
+			cubesMov[17] = createCubesMov(geometry, material, cubesMov[17], 0, 0.5, 10, 5, 5, 5);
+			cubesMov[18] = createCubesMov(geometry, material, cubesMov[18], -20, 2, 10, 5, 5, 5);
+			cubesMov[19] = createCubesMov(geometry, material, cubesMov[19], 20, 2, 10, 5, 5, 5);
+			
+			//Colisiones nivel 2
+			createCubes(geometry, material, cubesCol[11], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[11]);
+			createCubes(geometry, material, cubesCol[12], 0,2,0, 1.5, 1.5, 1.8, "Piranha", cubesMov[12]);
+			createCubes(geometry, material, cubesCol[13], 0,2,0, 1.5, 1.5, 0.8, "Globo", cubesMov[13]);
+			createCubes(geometry, material, cubesCol[14], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[14]);
+			createCubes(geometry, material, cubesCol[15], 0,2,0, 1.5, 1.5, 0.8, "Piranha", cubesMov[15]);
+			createCubes(geometry, material, cubesCol[16], 0,2,0, 1.5, 1.5, 0.8, "Piranha", cubesMov[16]);
+			createCubes(geometry, material, cubesCol[17], 0,2,0, 1.5, 1.5, 0.8, "Globo", cubesMov[17]);
+			createCubes(geometry, material, cubesCol[18], 0,2,0, 1.5, 1.5, 0.8, "Piranha", cubesMov[18]);
+			createCubes(geometry, material, cubesCol[19], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[19]);
 
 
-			// camera.rotation.y = THREE.Math.degToRad(-45);
-			camera.rotation.x = THREE.Math.degToRad(-38);  //cambio a 38
+
+			//Cubos de mov nivel 3
+						
+			cubesMov[20] = createCubesMov(geometry, material, cubesMov[20], 0, 0.5, 38, 5, 5, 5);
+			cubesMov[21] = createCubesMov(geometry, material, cubesMov[21], -20, 2, 40, 5, 5, 5);
+			cubesMov[22] = createCubesMov(geometry, material, cubesMov[22], 20, 2, 40, 5, 5, 5);
+			cubesMov[23] = createCubesMov(geometry, material, cubesMov[23], -25, 2, 25, 5, 5, 5);
+			cubesMov[24] = createCubesMov(geometry, material, cubesMov[24], 0, 2, 25, 5, 5, 5);
+			cubesMov[25] = createCubesMov(geometry, material, cubesMov[25], 25, 2, 25, 5, 5, 5);
+			cubesMov[26] = createCubesMov(geometry, material, cubesMov[26], 0, 0.5, 10, 5, 5, 5);
+			cubesMov[27] = createCubesMov(geometry, material, cubesMov[27], -20, 2, 10, 5, 5, 5);
+			cubesMov[28] = createCubesMov(geometry, material, cubesMov[28], 20, 2, 10, 5, 5, 5);
+			
+			//Colisiones nivel 3
+			createCubes(geometry, material, cubesCol[20], 0,2,0, 1.5, 1.5, 0.8, "Piranha", cubesMov[20]);
+			createCubes(geometry, material, cubesCol[21], 0,2,0, 1.5, 1.5, 1.8, "Tiburon", cubesMov[21]);
+			createCubes(geometry, material, cubesCol[22], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[22]);
+			createCubes(geometry, material, cubesCol[23], 0,2,0, 1.5, 1.5, 0.8, "Piranha", cubesMov[23]);
+			createCubes(geometry, material, cubesCol[24], 0,2,0, 1.5, 1.5, 0.8, "Tiburon", cubesMov[24]);
+			createCubes(geometry, material, cubesCol[25], 0,2,0, 1.5, 1.5, 0.8, "LightFish", cubesMov[25]);
+			createCubes(geometry, material, cubesCol[26], 0,2,0, 1.5, 1.5, 0.8, "Pulpo", cubesMov[26]);
+			createCubes(geometry, material, cubesCol[27], 0,2,0, 1.5, 1.5, 0.8, "LightFish", cubesMov[27]);
+			createCubes(geometry, material, cubesCol[28], 0,2,0, 1.5, 1.5, 0.8, "Tiburon", cubesMov[28]);
+
+			
+			
+			camera.rotation.x = THREE.Math.degToRad(-38);  
 			createParticle2(30, 8, 45);
 			createParticle2(-32, 8, 45);
 
@@ -919,11 +1050,11 @@
 
 						switch(collisionResults[0].object.name){
 							case "Piranha": 
-								puntaje = (puntaje + 1);
+								puntaje = (puntaje + 2);
 								break;	
 							
 							case "LightFish": 
-								
+								puntaje = (puntaje + 2);
 								break;
 
 							case "Globo": 
@@ -934,7 +1065,8 @@
 								puntaje = puntaje +1;
 								break;
 
-							case "Tiburon": 
+							case "Tiburon":
+								puntaje = (puntaje + 2); 
 								break;
 						}
 						
@@ -945,7 +1077,7 @@
 				}
 		}
 
-		// -------------------------------FALTA HACER ESTO/ SUPER CHECAR ESTO EN EL PUNTAJE --------------------------------------------------------------------------//CHECAR
+		
 		function Colisiona2(CuboMazo2){
 			var originPoint = CuboMazo2.position.clone();
 				for(var vertexIndex = 0; vertexIndex < CuboMazo2.geometry.vertices.length; vertexIndex++){
@@ -960,11 +1092,11 @@
 
 						switch(collisionResults[0].object.name){
 							case "Piranha": 
-								puntaje = (puntaje + 1);
+								puntaje = (puntaje + 2);
 								break;	
 							
 							case "LightFish": 
-								
+								puntaje = (puntaje + 2);
 								break;
 
 							case "Globo": 
@@ -976,7 +1108,7 @@
 								break;
 
 							case "Tiburon": 
-								
+								puntaje = (puntaje + 2);
 								break;
 						}
 
