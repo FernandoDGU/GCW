@@ -726,14 +726,15 @@
 					if(cubesMov[9].position.y <= -10)
 					contadores[9] = false;
 				}
-
+				
 				perdiste = n-1;
 				
 				if(perdiste > 20){
 
 					if(puntaje > 100){
-						PausaGame();
-						$('#exampleModal2').modal('show');
+						n = 0;
+						$("#Nivelfont").html("<p>LEVEL: 2</p>");
+						cambioNiveles = 1;
 					}else{
 						PausaGame();
 						$('#exampleModal3').modal('show');
@@ -742,51 +743,107 @@
 				}
 
 				//Para que no se vea bajar los modelos del nivel 2 y 3 
-				cubesMov[20].position.y = -10;
-				cubesMov[21].position.y = -10;
-				cubesMov[22].position.y = -10;
-				cubesMov[23].position.y = -10;
-				cubesMov[24].position.y = -10;
-				cubesMov[25].position.y = -10;
-				cubesMov[26].position.y = -10;
-				cubesMov[27].position.y = -10;
-				cubesMov[28].position.y = -10;
+				cubesMov[20].position.y = -20;
+				cubesMov[21].position.y = -20;
+				cubesMov[22].position.y = -20;
+				cubesMov[23].position.y = -20;
+				cubesMov[24].position.y = -20;
+				cubesMov[25].position.y = -20;
+				cubesMov[26].position.y = -20;
+				cubesMov[27].position.y = -20;
+				cubesMov[28].position.y = -20;
+
+				cubesMov[11].position.y = -20;
+				cubesMov[12].position.y = -20;
+				cubesMov[13].position.y = -20;
+				cubesMov[14].position.y = -20;
+				cubesMov[15].position.y = -20;
+				cubesMov[16].position.y = -20;
+				cubesMov[17].position.y = -20;
+				cubesMov[18].position.y = -20;
+				cubesMov[19].position.y = -20;
 				
 			} 
 			
 			if(cambioNiveles == 1){
+				
+				
 				//Se bajan los del nivel 1 
-				cubesMov[2].position.y = -10;
-				cubesMov[3].position.y = -10;
-				cubesMov[4].position.y = -10;
-				cubesMov[5].position.y = -10;
-				cubesMov[6].position.y = -10;
-				cubesMov[7].position.y = -10;
-				cubesMov[8].position.y = -10;
-				cubesMov[9].position.y = -10;
-				cubesMov[10].position.y = -10;
+				cubesMov[2].position.y = -20;
+				cubesMov[3].position.y = -20;
+				cubesMov[4].position.y = -20;
+				cubesMov[5].position.y = -20;
+				cubesMov[6].position.y = -20;
+				cubesMov[7].position.y = -20;
+				cubesMov[8].position.y = -20;
+				cubesMov[9].position.y = -20;
+				cubesMov[10].position.y = -20;
 				
 
-				//Secuencia para hacer que suban y bajen los del nivel 2 
 
-				// perdiste = n-1;
-				// if(perdiste > 20){
-				// 	PausaGame();
-				// 	$('#exampleModal3').modal('show');
-				// }
+				//Suben nivel 2
+				cubesMov[11].position.y = 1;
+				cubesMov[12].position.y = 1;
+				cubesMov[13].position.y = 1;
+				cubesMov[14].position.y = 1;
+				cubesMov[15].position.y = 1;
+				cubesMov[16].position.y = 1;
+				cubesMov[17].position.y = 1;
+				cubesMov[18].position.y = 1;
+				cubesMov[19].position.y = 1;
+
+				perdiste = n-1;
+				if(perdiste > 20){
+					if(puntaje > 300){
+						n = 0;
+						$("#Nivelfont").html("<p> LEVEL: 3 </p>");
+						cambioNiveles = 2;
+
+					}else{
+						PausaGame();
+						$('#exampleModal3').modal('show');
+					}
+				}
+
+				//Secuencia para hacer que suban y bajen los del nivel 2 
 			}
 
 			if(cambioNiveles == 2){
+			
 				 //Se bajan los del nivel 2
-				cubesMov[11].position.y = -10;
-				cubesMov[12].position.y = -10;
-				cubesMov[13].position.y = -10;
-				cubesMov[14].position.y = -10;
-				cubesMov[15].position.y = -10;
-				cubesMov[16].position.y = -10;
-				cubesMov[17].position.y = -10;
-				cubesMov[18].position.y = -10;
-				cubesMov[19].position.y = -10;
+				cubesMov[11].position.y = -20;
+				cubesMov[12].position.y = -20;
+				cubesMov[13].position.y = -20;
+				cubesMov[14].position.y = -20;
+				cubesMov[15].position.y = -20;
+				cubesMov[16].position.y = -20;
+				cubesMov[17].position.y = -20;
+				cubesMov[18].position.y = -20;
+				cubesMov[19].position.y = -20;
+
+
+				//Subir nivel 3 
+				cubesMov[20].position.y = 1;
+				cubesMov[21].position.y = 1;
+				cubesMov[22].position.y = 1;
+				cubesMov[23].position.y = 1;
+				cubesMov[24].position.y = 1;
+				cubesMov[25].position.y = 1;
+				cubesMov[26].position.y = 1;
+				cubesMov[27].position.y = 1;
+				cubesMov[28].position.y = 1;
+
+				perdiste = n-1;
+				if(perdiste > 20){
+					if(puntaje > 600){
+						PausaGame();
+						$('#exampleModal2').modal('show');
+						// cambioNiveles = 2;
+					}else{
+						PausaGame();
+						$('#exampleModal3').modal('show');
+					}
+				}
 
 			 	//Secuencia par hacer que suban y bajen los del nivel 3
 			}
@@ -1245,7 +1302,7 @@
         <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: rgba(0,0,0,.0001) !important;">
             <div class="modal-body">
                 <img id="titlelose" src="../sources/lose.png" class="img-fluid">
-                <input id="scoreLose" type="number" value="" readonly>
+                <input id="scoreLose" type="number" value="0" readonly>
                 <img id="sigLose" class="img-fluid" src="../sources/losesignal2.png">
                 <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnLBack" src="../sources/back.png" alt="back"></a>
             </div>

@@ -43,3 +43,7 @@
                         isPaused = false;
                         console.log("quepedo");
                     }  
+
+                    function resetTimer(){
+                        n = 0;
+                    }
