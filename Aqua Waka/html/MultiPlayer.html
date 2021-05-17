@@ -115,7 +115,7 @@
 		var puntajeP2 = 0;
 		var puntajeGeneral= 0;
 
-		for(i = 1; i< 20; i++){
+		for(i = 1; i< 30; i++){
 			contadores[i] = false
 		}
 
@@ -764,15 +764,141 @@
 				
 				
 				//Suben nivel 2 Esto se debera cambiar por lo del movimiento, pero por pruebas lo deje así 
-				cubesMov[11].position.y = 1;
-				cubesMov[12].position.y = 1;
-				cubesMov[13].position.y = 1;
-				cubesMov[14].position.y = 1;
-				cubesMov[15].position.y = 1;
-				cubesMov[16].position.y = 1;
-				cubesMov[17].position.y = 1;
-				cubesMov[18].position.y = 1;
-				cubesMov[19].position.y = 1;
+				// cubesMov[11].position.y = 1;
+				// cubesMov[12].position.y = 1;
+				// cubesMov[13].position.y = 1;
+				// cubesMov[14].position.y = 1;
+				// cubesMov[15].position.y = 1;
+				// cubesMov[16].position.y = 1;
+				// cubesMov[17].position.y = 1;
+				// cubesMov[18].position.y = 1;
+				// cubesMov[19].position.y = 1;
+
+				//Pez 11
+				if(contadores[11] == false){
+					if(cubesMov[11].position.y < -1)
+					cubesMov[11].position.y += 0.1;
+					else
+					contadores[11] = true;
+				}
+
+				if(contadores[11] == true){
+					cubesMov[11].position.y -= 0.1;
+					if(cubesMov[11].position.y <= -14)
+					contadores[11] = false;
+				}
+
+				// Pez 12
+				if(contadores[12] == false){
+					if(cubesMov[12].position.y < -1)
+					cubesMov[12].position.y += 0.1;
+					else
+					contadores[12] = true;
+				}
+
+				if(contadores[12] == true){
+					cubesMov[12].position.y -= 0.1;
+					if(cubesMov[12].position.y <= -12)
+					contadores[12] = false;
+				}
+
+				// Pez 13
+				if(contadores[13] == false){
+					if(cubesMov[13].position.y < -1)
+					cubesMov[13].position.y += 0.1;
+					else
+					contadores[13] = true;
+				}
+
+				if(contadores[13] == true){
+					cubesMov[13].position.y -= 0.1;
+					if(cubesMov[13].position.y <= -15)
+					contadores[13] = false;
+				}
+
+				// Pez 14
+				if(contadores[14] == false){
+					if(cubesMov[14].position.y < -1)
+					cubesMov[14].position.y += 0.1;
+					else
+					contadores[14] = true;
+				}
+
+				if(contadores[14] == true){
+					cubesMov[14].position.y -= 0.1;
+					if(cubesMov[14].position.y <= -16)
+					contadores[14] = false;
+				}
+
+				// Pez 15
+				if(contadores[15] == false){
+					if(cubesMov[15].position.y < -1)
+					cubesMov[15].position.y += 0.1;
+					else
+					contadores[15] = true;
+				}
+
+				if(contadores[15] == true){
+					cubesMov[15].position.y -= 0.1;
+					if(cubesMov[15].position.y <= -9)
+					contadores[15] = false;
+				}
+
+				// Pez 16
+				if(contadores[16] == false){
+					if(cubesMov[16].position.y < -1)
+					cubesMov[16].position.y += 0.1;
+					else
+					contadores[16] = true;
+				}
+
+				if(contadores[16] == true){
+					cubesMov[16].position.y -= 0.1;
+					if(cubesMov[16].position.y <= -10)
+					contadores[16] = false;
+				}
+
+				// Pez 17
+				if(contadores[17] == false){
+					if(cubesMov[17].position.y < -1)
+					cubesMov[17].position.y += 0.1;
+					else
+					contadores[17] = true;
+				}
+
+				if(contadores[17] == true){
+					cubesMov[17].position.y -= 0.1;
+					if(cubesMov[17].position.y <= -17)
+					contadores[17] = false;
+				}
+
+				// Pez 18
+				if(contadores[18] == false){
+					if(cubesMov[18].position.y < -1)
+					cubesMov[18].position.y += 0.1;
+					else
+					contadores[18] = true;
+				}
+
+				if(contadores[18] == true){
+					cubesMov[18].position.y -= 0.1;
+					if(cubesMov[18].position.y <= -10)
+					contadores[18] = false;
+				}
+
+				// Pez 19
+				if(contadores[19] == false){
+					if(cubesMov[19].position.y < -1)
+					cubesMov[19].position.y += 0.1;
+					else
+					contadores[19] = true;
+				}
+
+				if(contadores[19] == true){
+					cubesMov[19].position.y -= 0.1;
+					if(cubesMov[19].position.y <= -11)
+					contadores[19] = false;
+				}
 
 				perdiste = n-1;
 				if(perdiste > 20){
@@ -804,15 +930,140 @@
 				cubesMov[19].position.y = -20;
 
 				//Subir nivel 3 Esto se debera cambiar por lo del movimiento, pero por pruebas lo deje así 
-				cubesMov[20].position.y = 1;
-				cubesMov[21].position.y = 1;
-				cubesMov[22].position.y = 1;
-				cubesMov[23].position.y = 1;
-				cubesMov[24].position.y = 1;
-				cubesMov[25].position.y = 1;
-				cubesMov[26].position.y = 1;
-				cubesMov[27].position.y = 1;
-				cubesMov[28].position.y = 1;
+				// cubesMov[20].position.y = 1;
+				// cubesMov[21].position.y = 1;
+				// cubesMov[22].position.y = 1;
+				// cubesMov[23].position.y = 1;
+				// cubesMov[24].position.y = 1;
+				// cubesMov[25].position.y = 1;
+				// cubesMov[26].position.y = 1;
+				// cubesMov[27].position.y = 1;
+				// cubesMov[28].position.y = 1;
+				//Pez 20
+				if(contadores[20] == false){
+					if(cubesMov[20].position.y < -1)
+					cubesMov[20].position.y += 0.1;
+					else
+					contadores[20] = true;
+				}
+
+				if(contadores[20] == true){
+					cubesMov[20].position.y -= 0.1;
+					if(cubesMov[20].position.y <= -14)
+					contadores[20] = false;
+				}
+
+				// Pez 21
+				if(contadores[21] == false){
+					if(cubesMov[21].position.y < -1)
+					cubesMov[21].position.y += 0.1;
+					else
+					contadores[21] = true;
+				}
+
+				if(contadores[21] == true){
+					cubesMov[21].position.y -= 0.1;
+					if(cubesMov[21].position.y <= -12)
+					contadores[21] = false;
+				}
+
+				// Pez 22
+				if(contadores[22] == false){
+					if(cubesMov[22].position.y < -1)
+					cubesMov[22].position.y += 0.1;
+					else
+					contadores[22] = true;
+				}
+
+				if(contadores[22] == true){
+					cubesMov[22].position.y -= 0.1;
+					if(cubesMov[22].position.y <= -15)
+					contadores[22] = false;
+				}
+
+				// Pez 23
+				if(contadores[23] == false){
+					if(cubesMov[23].position.y < -1)
+					cubesMov[23].position.y += 0.1;
+					else
+					contadores[23] = true;
+				}
+
+				if(contadores[23] == true){
+					cubesMov[23].position.y -= 0.1;
+					if(cubesMov[23].position.y <= -16)
+					contadores[23] = false;
+				}
+
+				// Pez 24
+				if(contadores[24] == false){
+					if(cubesMov[24].position.y < -1)
+					cubesMov[24].position.y += 0.1;
+					else
+					contadores[24] = true;
+				}
+
+				if(contadores[24] == true){
+					cubesMov[24].position.y -= 0.1;
+					if(cubesMov[24].position.y <= -9)
+					contadores[24] = false;
+				}
+
+				// Pez 25
+				if(contadores[25] == false){
+					if(cubesMov[25].position.y < -1)
+					cubesMov[25].position.y += 0.1;
+					else
+					contadores[25] = true;
+				}
+
+				if(contadores[25] == true){
+					cubesMov[25].position.y -= 0.1;
+					if(cubesMov[25].position.y <= -10)
+					contadores[25] = false;
+				}
+
+				// Pez 26
+				if(contadores[26] == false){
+					if(cubesMov[26].position.y < -1)
+					cubesMov[26].position.y += 0.1;
+					else
+					contadores[26] = true;
+				}
+
+				if(contadores[26] == true){
+					cubesMov[26].position.y -= 0.1;
+					if(cubesMov[26].position.y <= -17)
+					contadores[26] = false;
+				}
+
+				// Pez 27
+				if(contadores[27] == false){
+					if(cubesMov[27].position.y < -1)
+					cubesMov[27].position.y += 0.1;
+					else
+					contadores[27] = true;
+				}
+
+				if(contadores[27] == true){
+					cubesMov[27].position.y -= 0.1;
+					if(cubesMov[27].position.y <= -10)
+					contadores[27] = false;
+				}	
+
+				// Pez 28
+				if(contadores[28] == false){
+					if(cubesMov[28].position.y < -1)
+					cubesMov[28].position.y += 0.1;
+					else
+					contadores[28] = true;
+				}
+
+				if(contadores[28] == true){
+					cubesMov[28].position.y -= 0.1;
+					if(cubesMov[28].position.y <= -11)
+					contadores[28] = false;
+				}
 
 				perdiste = n-1;
 				if(perdiste > 20){
