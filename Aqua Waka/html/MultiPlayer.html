@@ -570,15 +570,6 @@
 				cube.rotation.x = THREE.Math.degToRad(0);
 			}
 
-			//CAMBIO DE NIVEL POR TECLAS
-			if(keys["Y"]){
-				//movpos = 20;
-				cambioNiveles = 1;
-			}else if (keys["H"]){
-				//movpos = -20;
-				cambioNiveles = 2;
-			}
-
 
             //Segundo martillo
 
@@ -761,15 +752,17 @@
 
 				perdiste = n-1;
 
-				if(perdiste > 20){
+				if(perdiste > 24){
 
-					if(puntaje > 200){ //200 por que es multiplayer
+					if(puntaje > 300){ //200 por que es multiplayer
 						n = 0;
 						$("#Nivelfont").html("<p>LEVEL: 2</p>");
 						cambioNiveles = 1;
 					}else{
 						PausaGame();
 						$('#exampleModal3').modal('show');
+						cubeSmash1 = 0;
+						cubeSmash2 = 0;
 					}
 				
 				}
@@ -948,7 +941,7 @@
 				}
 
 				perdiste = n-1;
-				if(perdiste > 20){
+				if(perdiste > 24){
 					if(puntaje > 600){
 						n = 0;
 						$("#Nivelfont").html("<p> LEVEL: 3 </p>");
@@ -957,6 +950,8 @@
 					}else{
 						PausaGame();
 						$('#exampleModal3').modal('show');
+						cubeSmash1 = 0;
+						cubeSmash2 = 0;
 					}
 				}
 
@@ -1113,14 +1108,18 @@
 				}
 
 				perdiste = n-1;
-				if(perdiste > 20){
+				if(perdiste > 24){
 					if(puntaje > 1200){
 						PausaGame();
 						$('#exampleModal2').modal('show');
-						// cambioNiveles = 2;
+						cubeSmash1 = 0;
+						cubeSmash2 = 0;
+						
 					}else{
 						PausaGame();
 						$('#exampleModal3').modal('show');
+						cubeSmash1 = 0;
+						cubeSmash2 = 0;
 					}
 				}
 
@@ -1542,8 +1541,8 @@
         <img id="titulito" src="../sources/aquawaka.png" class="img-fluid">
 
         <input type="image" id="btnPausa" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="PausaGame()">
-        <input type="image" id="btnVictory" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-        <input type="image" id="btnLose" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+        <!--<input type="image" id="btnVictory" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        <input type="image" id="btnLose" src="../sources/btnsettings.png" data-bs-toggle="modal" data-bs-target="#exampleModal3">-->
         </div>
     </div>
 
@@ -1575,7 +1574,7 @@
                             	<input id="scoreVictory" type="number" value="" readonly>
                                 <label id="userinp" for="usernameinput">SHARE YOUR SCORE</label>
                                 <input type="text" class="form-control" id="usernameinput" placeholder="Enter an Username">
-                                <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal" onclick="writeData()">
+                                <input type="image" class="img-fluid" id="btnUp" src="../sources/subir.png" alt="subir" data-bs-dismiss="modal" onclick="writeData(); alert('Datos subidos con exito');">
                                 <button id="btnFB" type="button" class="btn btn-primary" onclick="shareFB()">Compartir en Facebook</button>
                             </div>
                         </form>
