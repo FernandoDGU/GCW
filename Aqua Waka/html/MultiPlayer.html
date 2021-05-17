@@ -119,7 +119,26 @@
 			contadores[i] = false
 		}
 
+		var onControl = false
+
+		var gamepad={};
+
+
+
 		$(document).ready(function(){
+
+			window.addEventListener('gamepadconnected', event => {
+			    console.log("Control Conectado.");
+			    console.log(event.gamepad);
+
+			    onControl = true;
+			});
+
+			window.addEventListener('gamepaddisconnected', event => {
+			    console.log("Control Desconectado");
+
+			    onControl = false;
+			});
 
 	//Musica arreglada
         var musicastop = localStorage.getItem('musica');
@@ -525,6 +544,8 @@
 			requestAnimationFrame(render);
 			deltaTime = clock.getDelta();	
 
+			gamepad=navigator.getGamepads();
+
 			var yaw = 0, yaw2 = 0;
 			var forward = 0, forward2 = 0;
 
@@ -561,27 +582,53 @@
 
             //Segundo martillo
 
-            
-			if (keys["J"]) {
-				yaw2 = -20;
-			} else if (keys["L"]) {
-				yaw2 = 20;
+			if(onControl==false){
+				if (keys["J"]) {
+					yaw2 = -20;
+				} else if (keys["L"]) {
+					yaw2 = 20;
+				}
+				if (keys["I"]) {
+					forward2 = -20;
+				} else if (keys["K"]) {
+					forward2 = 20;
+				}
+
+				if(keys["N"]){
+					cube2.rotation.x = THREE.Math.degToRad(-90);
+					Colisiona2(cubeSmash2);
+					yaw2 = 0;
+					forward2 = 0;
+				}else {
+
+					cube2.rotation.x = THREE.Math.degToRad(0);
+				}
 			}
-			if (keys["I"]) {
-				forward2 = -20;
-			} else if (keys["K"]) {
-				forward2 = 20;
+			else{
+				if (gamepad[0].buttons[14].pressed) {
+					yaw2 = -20;
+				} else if (gamepad[0].buttons[15].pressed) {
+					yaw2 = 20;
+				}
+				if (gamepad[0].buttons[12].pressed) {
+					forward2 = -20;
+				} else if (gamepad[0].buttons[13].pressed) {
+					forward2 = 20;
+				}
+
+				if(gamepad[0].buttons[0].pressed){
+					cube2.rotation.x = THREE.Math.degToRad(-90);
+					Colisiona2(cubeSmash2);
+					yaw2 = 0;
+					forward2 = 0;
+				}else {
+
+					cube2.rotation.x = THREE.Math.degToRad(0);
+				}
 			}
 
-			if(keys["N"]){
-				cube2.rotation.x = THREE.Math.degToRad(-90);
-				Colisiona2(cubeSmash2);
-				yaw2 = 0;
-				forward2 = 0;
-			}else {
-				
-				cube2.rotation.x = THREE.Math.degToRad(0);
-			}
+            
+			
 
 			//Primer nivel
 			if(cambioNiveles == 0){
