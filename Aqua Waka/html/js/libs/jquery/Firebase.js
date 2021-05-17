@@ -18,9 +18,9 @@ function writeData(){
         name: document.getElementById("usernameinput").value,
         score: document.getElementById("scoreVictory").value
     });
+
     var nombre =document.getElementById("usernameinput").value;
     localStorage.setItem('Usuario', nombre);
-    // $('.product-list').append(nombre + "----" + puntos);
 }
 
 //Obtener de la Base
