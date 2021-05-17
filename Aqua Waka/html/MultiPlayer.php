@@ -83,7 +83,7 @@
 
         function salir(){
              if (confirm("Quiere salir del juego?")) {
-                location.href ="Beginplay.html";
+                location.href ="Beginplay.php";
             } else {
 
             }
@@ -1582,7 +1582,7 @@
                     <div class="col">
                         <img id="titlevictory" src="../sources/victory.png" class="img-fluid">
                         <img id="sigVictory" class="img-fluid" src="../sources/victorysignal.png">
-                        <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnVBack" src="../sources/back.png" alt="next"></a>
+                        <a href="Beginplay.php"><input type="image" class="img-fluid" id="btnVBack" src="../sources/back.png" alt="next"></a>
                     </div>
                 </div>
             </div>
@@ -1597,7 +1597,7 @@
                 <img id="titlelose" src="../sources/lose.png" class="img-fluid">
                 <input id="scoreLose" type="number" value="0" readonly>
                 <img id="sigLose" class="img-fluid" src="../sources/losesignal2.png">
-                <a href="Beginplay.html"><input type="image" class="img-fluid" id="btnLBack" src="../sources/back.png" alt="back"></a>
+                <a href="Beginplay.php"><input type="image" class="img-fluid" id="btnLBack" src="../sources/back.png" alt="back"></a>
             </div>
         </div>
     </div>
